@@ -1,9 +1,10 @@
 $ErrorActionPreference = "Stop"
 
 Write-Host ">>> Linking to Vercel..." -ForegroundColor Cyan
-vercel link --yes
+# Using npx to bypass local execution policy restrictions
+npx vercel link --yes
 
 Write-Host ">>> Deploying to Production..." -ForegroundColor Cyan
-vercel --prod --yes
+npx vercel --prod --yes
 
 Write-Host ">>> Deployment Complete." -ForegroundColor Green
