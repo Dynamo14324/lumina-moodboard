@@ -116,6 +116,7 @@ function LuminaContent() {
         onClose={() => setIsDrawerOpen(false)} 
         watchlist={watchlist} 
         onRemove={removeFromWatchlist}
+        onSelectMovie={handleMovieSelect}
       />
       
       {/* My Stash Button */}

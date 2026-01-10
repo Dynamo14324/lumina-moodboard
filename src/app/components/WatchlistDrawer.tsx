@@ -10,9 +10,10 @@ interface WatchlistDrawerProps {
   onClose: () => void;
   watchlist: Movie[];
   onRemove: (id: number) => void;
+  onSelectMovie: (id: number) => void;
 }
 
-export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove }: WatchlistDrawerProps) {
+export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove, onSelectMovie }: WatchlistDrawerProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -51,7 +52,11 @@ export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove }: Watchl
               ) : (
                 <div className="space-y-4">
                   {watchlist.map((movie) => (
-                    <div key={movie.id} className="flex gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-colors group">
+                    <div 
+                        key={movie.id} 
+                        onClick={() => onSelectMovie(movie.id)}
+                        className="flex gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-colors group cursor-pointer"
+                    >
                         <div className="w-16 h-24 flex-shrink-0 bg-black rounded-lg overflow-hidden relative">
                              {movie.poster_path && (
                                <Image 
