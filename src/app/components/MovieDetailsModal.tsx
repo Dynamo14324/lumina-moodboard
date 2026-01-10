@@ -20,12 +20,7 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (!movieId) {
-        // Only reset if we actually have data to clear, avoiding redundant updates
-        setDetails(prev => prev ? null : prev);
-        setProviders(prev => prev ? null : prev);
-        return;
-    }
+    if (!movieId) return;
 
     let isMounted = true;
     setLoading(true);
