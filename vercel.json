@@ -3,6 +3,5 @@
   "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
-  "regions": ["iad1"],
-  "skewProtection": true
+  "regions": ["iad1"]
 }
