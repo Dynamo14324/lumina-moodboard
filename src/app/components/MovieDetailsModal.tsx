@@ -21,8 +21,9 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
 
   useEffect(() => {
     if (!movieId) {
-        setDetails(null);
-        setProviders(null);
+        // Only reset if we actually have data to clear, avoiding redundant updates
+        setDetails(prev => prev ? null : prev);
+        setProviders(prev => prev ? null : prev);
         return;
     }
 
@@ -191,8 +192,8 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                            <div className="w-8 h-8 flex items-center justify-center bg-blue-500/20 rounded-full text-blue-400 group-hover:scale-110 transition-transform">
                                <Globe size={16} />
                            </div>
-                           <div className="flex flex-col">
-                               <span className="text-sm font-medium text-white group-hover:text-blue-300 transition-colors">Find "{details.title}" on Google</span>
+                               <div className="flex flex-col">
+                               <span className="text-sm font-medium text-white group-hover:text-blue-300 transition-colors">Find &quot;{details.title}&quot; on Google</span>
                                <span className="text-xs text-zinc-500">Check availability</span>
                            </div>
                        </a>
