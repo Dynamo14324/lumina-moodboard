@@ -38,6 +38,8 @@ function LuminaContent() {
     const movieParam = searchParams.get("movie");
 
     if (moodParam && moodParam !== selectedMood) {
+      // Defer state update to avoid sync update warning if strict mode is picky
+      // Actually, updating state in effect based on props/url is standard, but let's ensure we don't loop.
       setSelectedMood(moodParam);
     }
     
