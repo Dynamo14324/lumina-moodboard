@@ -22,7 +22,7 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
   useEffect(() => {
     if (movieId) {
       let isMounted = true;
-      setLoading(true);
+      if (!loading) setLoading(true);
       Promise.all([
         fetchMovieDetails(movieId),
         fetchWatchProviders(movieId)
@@ -180,11 +180,15 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                                 <div key={actor.id} className="bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
                                     <div className="aspect-[2/3] w-full rounded-md overflow-hidden bg-gray-800 mb-2">
                                         {actor.profile_path ? (
-                                             <img 
-                                                src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`} 
-                                                alt={actor.name}
-                                                className="w-full h-full object-cover"
-                                              />
+                                             <div className="relative w-full h-full">
+                                                <Image 
+                                                   src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`} 
+                                                   alt={actor.name}
+                                                   fill
+                                                   className="object-cover"
+                                                   sizes="(max-width: 768px) 50vw, 20vw"
+                                                 />
+                                             </div>
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-white/20">
                                                 <User size={32} />

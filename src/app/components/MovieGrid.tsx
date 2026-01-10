@@ -2,7 +2,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Movie } from "@/lib/types";
+import { Movie } from "@/lib/types";
 import { Heart } from "lucide-react";
+import Image from "next/image";
 
 interface MovieGridProps {
   movies: Movie[];
@@ -50,10 +52,12 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
                 <Heart size={20} className={watchlist.some(w => w.id === movie.id) ? "fill-red-500 text-red-500" : ""} />
              </button>
              {movie.poster_path ? (
-               <img 
+               <Image 
                  src={movie.poster_path.startsWith('/') ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : movie.poster_path} 
                  alt={movie.title}
-                 className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                 fill
+                 className="object-cover transition-transform duration-700 group-hover:scale-110"
+                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                />
              ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-zinc-700 bg-zinc-900 p-4 text-center">
