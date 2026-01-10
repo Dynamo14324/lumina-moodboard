@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { MoodSelector, MOODS } from "./components/MoodSelector";
 import { MovieGrid } from "./components/MovieGrid";
 import { AudioAmbience } from "./components/AudioAmbience";
@@ -14,6 +14,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { MovieDetailsModal } from "./components/MovieDetailsModal";
 
 export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#050505]" />}>
+      <LuminaContent />
+    </Suspense>
+  );
+}
+
+function LuminaContent() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
