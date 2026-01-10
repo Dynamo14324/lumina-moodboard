@@ -157,7 +157,7 @@ export default function Home() {
            animate={{ opacity: 1, y: 0 }}
            transition={{ delay: 0.5 }}
         >
-        >
+
           <MoodSelector selected={selectedMood || ""} onSelect={handleMoodSelect} />
         </motion.div>
         
