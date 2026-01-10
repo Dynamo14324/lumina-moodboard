@@ -20,24 +20,27 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (movieId) {
-      let isMounted = true;
-      if (!loading) setLoading(true);
-      Promise.all([
-        fetchMovieDetails(movieId),
-        fetchWatchProviders(movieId)
-      ]).then(([data, providersData]) => {
-        if (isMounted) {
-            setDetails(data);
-            setProviders(providersData);
-            setLoading(false);
-        }
-      });
-      return () => { isMounted = false; };
-    } else {
-      setDetails(null);
-      setProviders(null);
+    if (!movieId) {
+        setDetails(null);
+        setProviders(null);
+        return;
     }
+
+    let isMounted = true;
+    setLoading(true);
+
+    Promise.all([
+      fetchMovieDetails(movieId),
+      fetchWatchProviders(movieId)
+    ]).then(([data, providersData]) => {
+      if (isMounted) {
+          setDetails(data);
+          setProviders(providersData);
+          setLoading(false);
+      }
+    });
+
+    return () => { isMounted = false; };
   }, [movieId]);
 
   const handleShare = () => {
@@ -145,7 +148,7 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
 
 
                 {/* Watch Providers */}
-                {providers && providers.length > 0 && (
+                {providers && providers.length > 0 ? (
                    <div className="space-y-4">
                         <h3 className="text-xl font-semibold text-white flex items-center gap-2">
                            <Globe size={20} className="text-blue-400" /> Where to Watch
@@ -174,6 +177,26 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                            ))}
                        </div>
                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                           <Globe size={20} className="text-blue-400" /> Where to Watch
+                       </h3>
+                       <a 
+                           href={`https://www.google.com/search?q=watch+${encodeURIComponent(details.title)}`}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="inline-flex items-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all group"
+                       >
+                           <div className="w-8 h-8 flex items-center justify-center bg-blue-500/20 rounded-full text-blue-400 group-hover:scale-110 transition-transform">
+                               <Globe size={16} />
+                           </div>
+                           <div className="flex flex-col">
+                               <span className="text-sm font-medium text-white group-hover:text-blue-300 transition-colors">Find "{details.title}" on Google</span>
+                               <span className="text-xs text-zinc-500">Check availability</span>
+                           </div>
+                       </a>
+                    </div>
                 )}
 
                 {/* Cast */}
