@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { X, Trash2, Heart } from "lucide-react";
 import { Movie } from "@/lib/types";
@@ -37,7 +38,7 @@ export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove }: Watchl
                 <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                     <Heart className="fill-red-500 text-red-500" /> My Stash
                 </h2>
-                <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white">
+                <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white" aria-label="Close Watchlist" title="Close Watchlist">
                   <X size={24} />
                 </button>
               </div>
@@ -51,8 +52,16 @@ export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove }: Watchl
                 <div className="space-y-4">
                   {watchlist.map((movie) => (
                     <div key={movie.id} className="flex gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-colors group">
-                        <div className="w-16 h-24 flex-shrink-0 bg-black rounded-lg overflow-hidden">
-                             {movie.poster_path && <img src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`} alt={movie.title} className="w-full h-full object-cover" />}
+                        <div className="w-16 h-24 flex-shrink-0 bg-black rounded-lg overflow-hidden relative">
+                             {movie.poster_path && (
+                               <Image 
+                                 src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`} 
+                                 alt={movie.title} 
+                                 fill
+                                 className="object-cover"
+                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                               />
+                             )}
                         </div>
                         <div className="flex-1 min-w-0">
                             <h3 className="text-white font-medium truncate">{movie.title}</h3>
@@ -64,6 +73,8 @@ export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove }: Watchl
                         <button 
                             onClick={(e) => { e.stopPropagation(); onRemove(movie.id); }}
                             className="text-zinc-500 hover:text-red-400 p-2 transition-colors self-start"
+                            aria-label={`Remove ${movie.title} from watchlist`}
+                            title={`Remove ${movie.title} from watchlist`}
                         >
                             <Trash2 size={18} />
                         </button>

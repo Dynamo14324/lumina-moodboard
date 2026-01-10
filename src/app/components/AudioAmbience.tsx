@@ -5,9 +5,10 @@ import { Volume2, VolumeX } from "lucide-react";
 
 interface AudioAmbienceProps {
   mood: string | null;
+  shouldDuck?: boolean; // Duck volume (e.g. for trailer)
 }
 
-export function AudioAmbience({ mood }: AudioAmbienceProps) {
+export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) {
   const [muted, setMuted] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const oscillatorsRef = useRef<OscillatorNode[]>([]);
@@ -47,8 +48,13 @@ export function AudioAmbience({ mood }: AudioAmbienceProps) {
     // Master gain fade in
     gainNodeRef.current.gain.cancelScheduledValues(now);
     gainNodeRef.current.gain.setValueAtTime(0, now);
-    gainNodeRef.current.gain.linearRampToValueAtTime(0.1, now + 2); // 2s fade in
+    const targetVolume = shouldDuck ? 0 : 0.1;
+    gainNodeRef.current.gain.cancelScheduledValues(now);
+    gainNodeRef.current.gain.setValueAtTime(gainNodeRef.current.gain.value, now);
+    gainNodeRef.current.gain.linearRampToValueAtTime(targetVolume, now + 1);
 
+    if (shouldDuck) return; // Don't restart oscs if just ducking, just wait.
+    
     const oscs: OscillatorNode[] = [];
 
     if (mood === "adrenaline") {
@@ -133,7 +139,7 @@ export function AudioAmbience({ mood }: AudioAmbienceProps) {
 
     oscillatorsRef.current = oscs;
 
-  }, [mood, muted]);
+  }, [mood, muted, shouldDuck]);
 
   const stopOscillators = () => {
      oscillatorsRef.current.forEach(o => {
@@ -143,12 +149,15 @@ export function AudioAmbience({ mood }: AudioAmbienceProps) {
   };
 
   return (
-    <button 
-      onClick={() => setMuted(!muted)}
-      className="fixed bottom-6 right-6 z-50 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-white/20 transition-all shadow-lg hover:shadow-indigo-500/20"
-      title="Toggle Audio Ambience"
-    >
-      {muted ? <VolumeX size={20} /> : <Volume2 size={20} className="animate-pulse" />}
-    </button>
+    shouldDuck ? null : (
+      <button 
+        onClick={() => setMuted(!muted)}
+        className="fixed bottom-6 right-6 z-50 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-white/20 transition-all shadow-lg hover:shadow-indigo-500/20"
+        title="Toggle Audio Ambience"
+        aria-label={muted ? "Unmute Ambience" : "Mute Ambience"}
+      >
+        {muted ? <VolumeX size={20} /> : <Volume2 size={20} className="animate-pulse" />}
+      </button>
+    )
   );
 }

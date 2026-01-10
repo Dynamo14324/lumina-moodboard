@@ -75,6 +75,8 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                <button 
                  onClick={onClose}
                  className="absolute top-4 right-4 z-20 p-2 bg-black/40 hover:bg-white/20 rounded-full transition-colors text-white"
+                 aria-label="Close details"
+                 title="Close details"
                >
                  <X size={24} />
                </button>
@@ -83,6 +85,7 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                  onClick={handleShare}
                  className="absolute top-4 right-16 z-20 p-2 bg-black/40 hover:bg-white/20 rounded-full transition-colors text-white flex items-center gap-2"
                  title="Copy Link"
+                 aria-label="Share this movie"
                >
                  <Share2 size={24} />
                  {copied && <span className="text-xs font-semibold bg-green-500 px-2 py-1 rounded-full animate-bounce">Copied!</span>}

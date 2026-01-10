@@ -98,7 +98,7 @@ function LuminaContent() {
 
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-purple-500/30 overflow-x-hidden">
-      <AudioAmbience mood={selectedMood} />
+      <AudioAmbience mood={selectedMood} shouldDuck={!!selectedMovieId} />
       <MovieDetailsModal movieId={selectedMovieId} onClose={handleCloseModal} />
       <WatchlistDrawer 
         isOpen={isDrawerOpen} 

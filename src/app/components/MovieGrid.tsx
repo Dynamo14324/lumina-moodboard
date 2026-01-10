@@ -44,6 +44,8 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
              <button
                 onClick={(e) => { e.stopPropagation(); onToggleWatchlist(movie); }}
                 className="absolute top-2 right-2 z-30 p-2 rounded-full bg-black/40 hover:bg-white/20 text-white transition-colors opacity-0 group-hover:opacity-100"
+                aria-label={watchlist.some(w => w.id === movie.id) ? "Remove from watchlist" : "Add to watchlist"}
+                title={watchlist.some(w => w.id === movie.id) ? "Remove from watchlist" : "Add to watchlist"}
              >
                 <Heart size={20} className={watchlist.some(w => w.id === movie.id) ? "fill-red-500 text-red-500" : ""} />
              </button>
