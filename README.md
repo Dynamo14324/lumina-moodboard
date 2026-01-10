@@ -70,7 +70,7 @@ sequenceDiagram
 | **Styling** | Tailwind CSS + clsx |
 | **Animation** | Framer Motion |
 | **Audio** | Native Web Audio API (No libraries) |
-| **SEO** | OpenGraph + JSON-LD (Planned) |
+| **SEO** | OpenGraph + JSON-LD (Implemented) |
 
 ## 🌍 Localization & SEO
 - **Region Awareness**: Automatically detects/defaults to US region for streaming providers, adjustable via API params.
