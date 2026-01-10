@@ -5,15 +5,16 @@ import { X, Trash2, Heart } from "lucide-react";
 import { Movie } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { useWatchlist } from "@/lib/useWatchlist";
+
 interface WatchlistDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  watchlist: Movie[];
-  onRemove: (id: number) => void;
   onSelectMovie: (id: number) => void;
 }
 
-export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove, onSelectMovie }: WatchlistDrawerProps) {
+export function WatchlistDrawer({ isOpen, onClose, onSelectMovie }: WatchlistDrawerProps) {
+  const { watchlist, removeFromWatchlist } = useWatchlist();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -76,7 +77,7 @@ export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove, onSelect
                             </div>
                         </div>
                         <button 
-                            onClick={(e) => { e.stopPropagation(); onRemove(movie.id); }}
+                            onClick={(e) => { e.stopPropagation(); removeFromWatchlist(movie.id); }}
                             className="text-zinc-500 hover:text-red-400 p-2 transition-colors self-start"
                             aria-label={`Remove ${movie.title} from watchlist`}
                             title={`Remove ${movie.title} from watchlist`}

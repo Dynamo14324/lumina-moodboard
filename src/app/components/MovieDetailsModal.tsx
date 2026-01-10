@@ -15,8 +15,6 @@ interface MovieDetailsModalProps {
 
 import { useWatchlist } from "@/lib/useWatchlist";
 
-
-
 export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) {
   const [details, setDetails] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(false);
@@ -114,31 +112,37 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                  {copied && <span className="text-xs font-semibold bg-green-500 px-2 py-1 rounded-full animate-bounce">Copied!</span>}
                </button>
 
-               <button
-                  onClick={(e) => {
-                      e.stopPropagation();
-                      if (isInWatchlist(details.id)) {
-                          removeFromWatchlist(details.id);
-                      } else {
-                          addToWatchlist({
-                              id: details.id,
-                              title: details.title,
-                              poster_path: details.poster_path, 
-                              backdrop_path: details.backdrop_path,
-                              overview: details.overview,
-                              release_date: details.release_date,
-                              vote_average: details.vote_average,
-                              genre_ids: details.genres.map(g => g.id),
-                              ai_insight: "" 
-                          });
-                      }
-                  }}
-                  className="absolute top-4 right-28 z-20 p-2 bg-black/40 hover:bg-white/20 rounded-full transition-colors text-white"
-                  title={isInWatchlist(details.id) ? "Remove from Stash" : "Add to Stash"}
-                  aria-label={isInWatchlist(details.id) ? "Remove from Stash" : "Add to Stash"}
-               >
-                  <Heart size={24} className={isInWatchlist(details.id) ? "fill-red-500 text-red-500" : ""} />
-               </button>
+                <button
+                   onClick={(e) => {
+                       e.stopPropagation();
+                       if (!details) return;
+                       
+                       const currentId = Number(details.id);
+                       if (isInWatchlist(currentId)) {
+                           removeFromWatchlist(currentId);
+                       } else {
+                           addToWatchlist({
+                               id: currentId,
+                               title: details.title,
+                               poster_path: details.poster_path, 
+                               backdrop_path: details.backdrop_path,
+                               overview: details.overview,
+                               release_date: details.release_date,
+                               vote_average: details.vote_average,
+                               genre_ids: details.genres?.map(g => g.id) || [],
+                               ai_insight: "" 
+                           });
+                       }
+                   }}
+                   className="absolute top-4 right-28 z-20 p-2 bg-black/40 hover:bg-white/20 rounded-full transition-all text-white group"
+                   title={details && isInWatchlist(Number(details.id)) ? "Remove from Stash" : "Add to Stash"}
+                   aria-label={details && isInWatchlist(Number(details.id)) ? "Remove from Stash" : "Add to Stash"}
+                >
+                   <Heart 
+                      size={24} 
+                      className={`transition-all duration-300 ${details && isInWatchlist(Number(details.id)) ? "fill-red-500 text-red-500 scale-110" : "text-white group-hover:text-red-400"}`} 
+                   />
+                </button>
                
                <div className="absolute bottom-0 left-0 p-6 z-20 w-full">
                  <h2 className="text-3xl sm:text-5xl font-bold text-white mb-2 text-shadow-lg tracking-tight">

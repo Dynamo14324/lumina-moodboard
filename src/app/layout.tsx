@@ -47,6 +47,8 @@ export const viewport: Viewport = {
   themeColor: "#050505",
 };
 
+import { WatchlistProvider } from "./context/WatchlistContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,7 +59,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#050505] text-white`}
       >
-        {children}
+        <WatchlistProvider>
+          {children}
+        </WatchlistProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

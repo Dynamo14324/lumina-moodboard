@@ -114,8 +114,6 @@ function LuminaContent() {
       <WatchlistDrawer 
         isOpen={isDrawerOpen} 
         onClose={() => setIsDrawerOpen(false)} 
-        watchlist={watchlist} 
-        onRemove={removeFromWatchlist}
         onSelectMovie={handleMovieSelect}
       />
       
