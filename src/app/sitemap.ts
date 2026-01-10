@@ -1,0 +1,14 @@
+import { Metadata, Route } from 'next'
+ 
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: 'https://lumina-moodboard.vercel.app',
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 1,
+    },
+  ]
+}
+
+import { MetadataRoute } from 'next'

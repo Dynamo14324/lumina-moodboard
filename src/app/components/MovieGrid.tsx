@@ -1,8 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { Movie } from "@/lib/types";
-import { Movie } from "@/lib/types";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 

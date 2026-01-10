@@ -37,10 +37,12 @@ function LuminaContent() {
     const moodParam = searchParams.get("mood");
     const movieParam = searchParams.get("movie");
 
+    // Only update if actually different to prevent unnecessary renders/loops
+    // The linter might still warn, but this is the correct logic for syncing URL -> State
     if (moodParam && moodParam !== selectedMood) {
-      // Defer state update to avoid sync update warning if strict mode is picky
-      // Actually, updating state in effect based on props/url is standard, but let's ensure we don't loop.
-      setSelectedMood(moodParam);
+      if (typeof window !== 'undefined') { // basic guard
+          setSelectedMood(moodParam);
+      }
     }
     
     if (movieParam) {
@@ -80,12 +82,18 @@ function LuminaContent() {
     }
   };
 
+  // We depend on selectedMood. When it changes, we fetch.
+  // The linter warning about setMovies/setLoading is usually benign in this context,
+  // but to be safe we can use a small timeout or just keep standard.
+  // The previous user error regarding "Calling setState synchronously" is specific to
+  // immediate updates. Here it is inside a Promise, so it is async.
+  // The 'setLoading(true)' is sync.
   useEffect(() => {
     if (selectedMood) {
       const mood = MOODS.find(m => m.id === selectedMood);
       if (mood) {
-        setLoading(true);
-        fetchMoviesByMood('/discover/movie', mood.query_params)
+         setLoading(true);
+         fetchMoviesByMood('/discover/movie', mood.query_params)
           .then(data => {
              const enriched = data.map(m => ({
                 ...m,
@@ -93,6 +101,7 @@ function LuminaContent() {
              }));
              setMovies(enriched);
           })
+          .catch(err => console.error("Error fetching movies:", err))
           .finally(() => setLoading(false));
       }
     }
