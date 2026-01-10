@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Lumina | AI-Powered Cinematic Discovery",
   description: "Stop searching. Start feeling. Discover movies based on your emotional state with Lumina's AI-powered mood selector.",
   keywords: ["movies", "mood", "ai", "discovery", "cinema", "recommendation", "streaming"],
-  authors: [{ name: "Architect-Zero" }],
+  authors: [{ name: "Yogesh Jadhav (Dynamo_14324)" }],
   openGraph: {
     title: "Lumina | AI-Powered Cinematic Discovery",
     description: "Curated cinematic soundscapes based on your mood.",
@@ -71,7 +71,7 @@ export default function RootLayout({
               "operatingSystem": "Web",
               "author": {
                 "@type": "Person",
-                "name": "Architect-Zero"
+                "name": "Yogesh Jadhav (Dynamo_14324)"
               }
             })
           }}

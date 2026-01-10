@@ -152,8 +152,15 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                        </h3>
                        <div className="flex flex-wrap gap-4">
                            {providers.map((p) => (
-                               <div key={p.provider_id} className="flex flex-col items-center gap-2" title={p.provider_name}>
-                                   <div className="w-12 h-12 relative rounded-lg shadow-md overflow-hidden">
+                               <a 
+                                   key={p.provider_id} 
+                                   href={`https://www.google.com/search?q=watch+${encodeURIComponent(details.title)}+on+${p.provider_name}`}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   className="flex flex-col items-center gap-2 group cursor-pointer"
+                                   title={`Watch on ${p.provider_name}`}
+                               >
+                                   <div className="w-12 h-12 relative rounded-lg shadow-md overflow-hidden group-hover:scale-110 transition-transform bg-zinc-800">
                                        <Image 
                                          src={`https://image.tmdb.org/t/p/original${p.logo_path}`} 
                                          alt={p.provider_name}
@@ -162,8 +169,8 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                                          sizes="48px"
                                        />
                                    </div>
-                                   <span className="text-xs text-zinc-400 max-w-[60px] truncate text-center">{p.provider_name}</span>
-                               </div>
+                                   <span className="text-xs text-zinc-400 max-w-[60px] truncate text-center group-hover:text-white transition-colors">{p.provider_name}</span>
+                               </a>
                            ))}
                        </div>
                    </div>
