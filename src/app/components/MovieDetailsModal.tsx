@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X, Play, User, Calendar, Star, Clock } from "lucide-react";
+import { X, Play, User, Calendar, Star, Clock, Heart } from "lucide-react";
 import { MovieDetails } from "@/lib/types";
 import { fetchMovieDetails, fetchWatchProviders } from "@/lib/api";
 import { WatchProvider } from "@/lib/types";
@@ -13,28 +13,44 @@ interface MovieDetailsModalProps {
   onClose: () => void;
 }
 
+import { useWatchlist } from "@/lib/useWatchlist";
+
+
+
 export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) {
   const [details, setDetails] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(false);
   const [providers, setProviders] = useState<WatchProvider[] | null>(null);
   const [copied, setCopied] = useState(false);
+  
+  const { isInWatchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
 
   useEffect(() => {
     if (!movieId) return;
 
     let isMounted = true;
-    setLoading(true);
+    
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const [data, providersData] = await Promise.all([
+                fetchMovieDetails(movieId),
+                fetchWatchProviders(movieId)
+            ]);
+            if (isMounted) {
+                setDetails(data);
+                setProviders(providersData);
+            }
+        } catch (error) {
+            console.error("Error fetching movie details:", error);
+        } finally {
+            if (isMounted) {
+                setLoading(false);
+            }
+        }
+    };
 
-    Promise.all([
-      fetchMovieDetails(movieId),
-      fetchWatchProviders(movieId)
-    ]).then(([data, providersData]) => {
-      if (isMounted) {
-          setDetails(data);
-          setProviders(providersData);
-          setLoading(false);
-      }
-    });
+    fetchData();
 
     return () => { isMounted = false; };
   }, [movieId]);
@@ -96,6 +112,32 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                >
                  <Share2 size={24} />
                  {copied && <span className="text-xs font-semibold bg-green-500 px-2 py-1 rounded-full animate-bounce">Copied!</span>}
+               </button>
+
+               <button
+                  onClick={(e) => {
+                      e.stopPropagation();
+                      if (isInWatchlist(details.id)) {
+                          removeFromWatchlist(details.id);
+                      } else {
+                          addToWatchlist({
+                              id: details.id,
+                              title: details.title,
+                              poster_path: details.poster_path, 
+                              backdrop_path: details.backdrop_path,
+                              overview: details.overview,
+                              release_date: details.release_date,
+                              vote_average: details.vote_average,
+                              genre_ids: details.genres.map(g => g.id),
+                              ai_insight: "" 
+                          });
+                      }
+                  }}
+                  className="absolute top-4 right-28 z-20 p-2 bg-black/40 hover:bg-white/20 rounded-full transition-colors text-white"
+                  title={isInWatchlist(details.id) ? "Remove from Stash" : "Add to Stash"}
+                  aria-label={isInWatchlist(details.id) ? "Remove from Stash" : "Add to Stash"}
+               >
+                  <Heart size={24} className={isInWatchlist(details.id) ? "fill-red-500 text-red-500" : ""} />
                </button>
                
                <div className="absolute bottom-0 left-0 p-6 z-20 w-full">
