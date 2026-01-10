@@ -1,8 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+
 import { Movie } from "@/lib/types";
-import { MovieDetailsModal } from "./MovieDetailsModal";
 import { Heart } from "lucide-react";
 
 interface MovieGridProps {
@@ -10,10 +9,10 @@ interface MovieGridProps {
   loading?: boolean;
   watchlist: Movie[];
   onToggleWatchlist: (movie: Movie) => void;
+  onSelectMovie: (id: number) => void;
 }
 
-export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist }: MovieGridProps) {
-  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSelectMovie }: MovieGridProps) {
 
   if (loading) {
     return (
@@ -27,10 +26,9 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist }: Mov
 
   return (
     <>
-      <MovieDetailsModal movieId={selectedMovieId} onClose={() => setSelectedMovieId(null)} />
       <motion.div 
         layout
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4"
       >
       <AnimatePresence mode="popLayout">
         {movies.map((movie) => (
@@ -41,7 +39,7 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist }: Mov
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
             className="group relative aspect-[2/3] rounded-xl overflow-hidden bg-zinc-950 border border-white/5 hover:border-white/20 transition-colors cursor-pointer"
-            onClick={() => setSelectedMovieId(movie.id)}
+            onClick={() => onSelectMovie(movie.id)}
           >
              <button
                 onClick={(e) => { e.stopPropagation(); onToggleWatchlist(movie); }}

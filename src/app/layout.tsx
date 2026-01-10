@@ -15,8 +15,29 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Lumina | AI-Powered Cinematic Discovery",
   description: "Stop searching. Start feeling. Discover movies based on your emotional state with Lumina's AI-powered mood selector.",
-  keywords: ["movies", "mood", "ai", "discovery", "cinema", "recommendation"],
+  keywords: ["movies", "mood", "ai", "discovery", "cinema", "recommendation", "streaming"],
   authors: [{ name: "Architect-Zero" }],
+  openGraph: {
+    title: "Lumina | AI-Powered Cinematic Discovery",
+    description: "Curated cinematic soundscapes based on your mood.",
+    url: "https://lumina-moodboard.vercel.app",
+    siteName: "Lumina",
+    images: [
+      {
+        url: "/og-image.jpg", // We don't have this, but standard practice to define it
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lumina",
+    description: "Stop searching. Start feeling.",
+    creator: "@ArchitectZero",
+  },
 };
 
 export const viewport: Viewport = {
@@ -36,6 +57,24 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#050505] text-white`}
       >
         {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Lumina",
+              "url": "https://lumina-moodboard.vercel.app",
+              "description": "AI-Powered Cinematic Discovery based on emotional state.",
+              "applicationCategory": "EntertainmentApplication",
+              "operatingSystem": "Web",
+              "author": {
+                "@type": "Person",
+                "name": "Architect-Zero"
+              }
+            })
+          }}
+        />
       </body>
     </html>
   );

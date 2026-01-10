@@ -1,4 +1,4 @@
-# ✦ Lumina
+# ✦ Lumina 2.0
 > **Stop searching. Start feeling.**
 
 ![Lumina Banner](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=300&section=header&text=Lumina&fontSize=90&animation=fadeIn&fontAlignY=38&desc=AI-Powered%20Cinematic%20Discovery&descAlignY=51&descAlign=62)
@@ -14,6 +14,29 @@
 
 ---
 
+## ⚡ Key Features (v2.0)
+
+### 🎭 Mood-Based Discovery
+Emotional filtering over genre filtering. Select a mood to generate a curated cinematic soundscape.
+
+### 🎵 Sonic Ambience
+Immersive, procedural audio drones generated via the Web Audio API that adapt to your selected mood (e.g., deep bass for Adrenaline, shimmering pads for Ethereal).
+
+### 🧠 AI Curator
+Contextual "AI Insight" badges that explain *why* a movie fits the specific mood, offering a layer of interpretative metadata.
+
+### 📽️ Deep Dive Modal
+A premium glassmorphism modal featuring:
+- **Official Trailers**: Instant playback (auto-stops on close).
+- **Where to Watch**: Region-aware streaming providers via JustWatch/TMDB.
+- **Top Cast**: Visual cast grid.
+- **Shareable Deep Links**: Copy the URL to share your exact discovery.
+
+### ❤️ My Stash (Watchlist)
+Persist your discoveries with a local-first watchlist drawer, allowing you to curate a session-independent collection.
+
+---
+
 ## 🏗 Architecture
 
 ```mermaid
@@ -22,36 +45,37 @@ sequenceDiagram
     participant UI as Next.js Client
     participant API as /lib/api.ts
     participant TMDB as The Movie DB
+    participant Audio as Web Audio API
 
-    User->>UI: Selects "Ethereal" Mood
-    UI->>UI: Show Loading State
+    User->>UI: Selects "Adrenaline" Mood
+    UI->>Audio: Generate Low-Freq Drone
+    UI->>UI: Update URL (?mood=adrenaline)
     UI->>API: fetchMoviesByMood(params)
-    API->>API: Check Cache / API Key
-    alt API Key Present
-        API->>TMDB: GET /discover/movie?with_genres=878,14...
-        TMDB-->>API: JSON Response (Real Data)
-    else API Key Missing
-        API-->>API: Load Synthetic Data (God Mode Fallback)
-    end
-    API-->>UI: Typed Movie[]
+    API->>TMDB: GET /discover/movie...
+    TMDB-->>API: JSON Response
+    API->>UI: Typed Movie[] + AI Insights
     UI-->>User: Render Staggered Grid
+    User->>UI: Clicks Movie
+    UI->>API: fetchMovieDetails + fetchWatchProviders
+    API-->>UI: Details + Providers
+    UI-->>User: Show Modal
 ```
-
-## ⚡ Features
-
-- **Mood-Based Discovery**: Emotional filtering over genre filtering.
-- **Glassmorphism UI**: High-end aesthetic using Tailwind CSS.
-- **Micro-Interactions**: Fluid animations powered by Framer Motion.
-- **Resilient Data Layer**: Works with or without an API Key (God Mode Fallback).
 
 ## 🛠 Tech Stack
 
 | Tech | Purpose |
-|Data| The Movie Database (TMDB) |
-|Framework| Next.js 14 (App Router) |
-|Styling| Tailwind CSS + clsx |
-|Animation| Framer Motion |
-|Type Safety| TypeScript Strict Mode |
+|------|---------|
+| **Data** | The Movie Database (TMDB) |
+| **Framework** | Next.js 14 (App Router) |
+| **Styling** | Tailwind CSS + clsx |
+| **Animation** | Framer Motion |
+| **Audio** | Native Web Audio API (No libraries) |
+| **SEO** | OpenGraph + JSON-LD (Planned) |
+
+## 🌍 Localization & SEO
+- **Region Awareness**: Automatically detects/defaults to US region for streaming providers, adjustable via API params.
+- **Micro-Metadata**: Optimized meta tags for Twitter Cards and OpenGraph sharing.
+- **Deep Linking**: Full state synchronization between URL and UI (`?mood=x&movie=y`).
 
 ## 🔮 Why I Built This
 

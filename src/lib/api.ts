@@ -1,4 +1,4 @@
-import { Movie, TMDBResponse, MovieDetails } from './types';
+import { Movie, TMDBResponse, MovieDetails, WatchProvider } from './types';
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -69,7 +69,8 @@ export async function fetchMoviesByMood(endpoint: string, params: Record<string,
   try {
     const searchParams = new URLSearchParams({
       api_key: API_KEY,
-      language: 'en-US',
+      language: params.language ? String(params.language) : 'en-US',
+      region: params.region ? String(params.region) : 'US',
       include_adult: 'false',
       include_video: 'false',
       page: '1',
@@ -117,6 +118,21 @@ export async function fetchMovieDetails(id: number): Promise<MovieDetails | null
     return data;
   } catch (error) {
     console.error("Fetch details error:", error);
+    return null;
+  }
+}
+
+export async function fetchWatchProviders(id: number, region: string = "US"): Promise<WatchProvider[] | null> {
+  if (!API_KEY) return [];
+
+  try {
+    const res = await fetch(`${BASE_URL}/movie/${id}/watch/providers?api_key=${API_KEY}`, {
+       next: { revalidate: 3600 }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.results?.[region]?.flatrate || data.results?.[region]?.buy || null;
+  } catch (e) {
     return null;
   }
 }

@@ -37,6 +37,13 @@ export interface MovieDetails extends Movie {
   genres: { id: number; name: string }[];
 }
 
+export interface WatchProvider {
+  logo_path: string;
+  provider_id: number;
+  provider_name: string;
+  display_priority: number;
+}
+
 export interface Mood {
   id: string;
   emoji: string;

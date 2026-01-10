@@ -10,14 +10,57 @@ import { motion } from "framer-motion";
 import { useWatchlist } from "@/lib/useWatchlist";
 import { WatchlistDrawer } from "./components/WatchlistDrawer";
 import { Heart } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { MovieDetailsModal } from "./components/MovieDetailsModal";
 
 export default function Home() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
   
   const { watchlist, addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Sync with URL on mount and update
+  useEffect(() => {
+    const moodParam = searchParams.get("mood");
+    const movieParam = searchParams.get("movie");
+
+    if (moodParam && moodParam !== selectedMood) {
+      setSelectedMood(moodParam);
+    }
+    
+    if (movieParam) {
+       setSelectedMovieId(Number(movieParam));
+    } else {
+       setSelectedMovieId(null);
+    }
+  }, [searchParams]);
+
+  const handleMoodSelect = (moodId: string) => {
+    setSelectedMood(moodId);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("mood", moodId);
+    // Clear movie when changing mood to avoid confusion? Or keep it? Lets keep it simple.
+    router.push(`?${params.toString()}`);
+  };
+
+  const handleMovieSelect = (movieId: number) => {
+    setSelectedMovieId(movieId);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("movie", String(movieId));
+    router.push(`?${params.toString()}`);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedMovieId(null);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("movie");
+    router.push(`?${params.toString()}`);
+  };
 
   const toggleWatchlist = (movie: Movie) => {
     if (isInWatchlist(movie.id)) {
@@ -48,6 +91,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-purple-500/30 overflow-x-hidden">
       <AudioAmbience mood={selectedMood} />
+      <MovieDetailsModal movieId={selectedMovieId} onClose={handleCloseModal} />
       <WatchlistDrawer 
         isOpen={isDrawerOpen} 
         onClose={() => setIsDrawerOpen(false)} 
@@ -113,7 +157,8 @@ export default function Home() {
            animate={{ opacity: 1, y: 0 }}
            transition={{ delay: 0.5 }}
         >
-          <MoodSelector selected={selectedMood} onSelect={setSelectedMood} />
+        >
+          <MoodSelector selected={selectedMood || ""} onSelect={handleMoodSelect} />
         </motion.div>
         
         <div className="mt-16 min-h-[400px]">
@@ -131,6 +176,7 @@ export default function Home() {
              loading={loading} 
              watchlist={watchlist}
              onToggleWatchlist={toggleWatchlist}
+             onSelectMovie={handleMovieSelect}
            />
         </div>
       </div>

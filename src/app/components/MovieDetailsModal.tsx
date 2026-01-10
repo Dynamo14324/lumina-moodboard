@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { X, Play, User, Calendar, Star, Clock } from "lucide-react";
 import { MovieDetails } from "@/lib/types";
-import { fetchMovieDetails } from "@/lib/api";
+import { fetchMovieDetails, fetchWatchProviders } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { WatchProvider } from "@/lib/types";
+import { Share2, Globe } from "lucide-react";
 
 interface MovieDetailsModalProps {
   movieId: number | null;
@@ -14,18 +16,32 @@ interface MovieDetailsModalProps {
 export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) {
   const [details, setDetails] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(false);
+  const [providers, setProviders] = useState<WatchProvider[] | null>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (movieId) {
       setLoading(true);
-      fetchMovieDetails(movieId).then((data) => {
+      Promise.all([
+        fetchMovieDetails(movieId),
+        fetchWatchProviders(movieId)
+      ]).then(([data, providersData]) => {
         setDetails(data);
+        setProviders(providersData);
         setLoading(false);
       });
     } else {
       setDetails(null);
+      setProviders(null);
     }
   }, [movieId]);
+
+  const handleShare = () => {
+    const url = `${window.location.origin}?movie=${movieId}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   if (!movieId) return null;
 
@@ -61,6 +77,15 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                  className="absolute top-4 right-4 z-20 p-2 bg-black/40 hover:bg-white/20 rounded-full transition-colors text-white"
                >
                  <X size={24} />
+               </button>
+               
+               <button 
+                 onClick={handleShare}
+                 className="absolute top-4 right-16 z-20 p-2 bg-black/40 hover:bg-white/20 rounded-full transition-colors text-white flex items-center gap-2"
+                 title="Copy Link"
+               >
+                 <Share2 size={24} />
+                 {copied && <span className="text-xs font-semibold bg-green-500 px-2 py-1 rounded-full animate-bounce">Copied!</span>}
                </button>
                
                <div className="absolute bottom-0 left-0 p-6 z-20 w-full">
@@ -104,6 +129,29 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                             />
                         </div>
                     </div>
+                )}
+
+
+
+                {/* Watch Providers */}
+                {providers && providers.length > 0 && (
+                   <div className="space-y-4">
+                        <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                           <Globe size={20} className="text-blue-400" /> Where to Watch
+                       </h3>
+                       <div className="flex flex-wrap gap-4">
+                           {providers.map((p) => (
+                               <div key={p.provider_id} className="flex flex-col items-center gap-2" title={p.provider_name}>
+                                   <img 
+                                     src={`https://image.tmdb.org/t/p/original${p.logo_path}`} 
+                                     alt={p.provider_name}
+                                     className="w-12 h-12 rounded-lg shadow-md" 
+                                   />
+                                   <span className="text-xs text-zinc-400 max-w-[60px] truncate text-center">{p.provider_name}</span>
+                               </div>
+                           ))}
+                       </div>
+                   </div>
                 )}
 
                 {/* Cast */}
