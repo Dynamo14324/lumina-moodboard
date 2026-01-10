@@ -1,4 +1,4 @@
-import { Metadata, Route } from 'next'
+import { MetadataRoute } from 'next'
  
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -10,5 +10,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 }
-
-import { MetadataRoute } from 'next'
