@@ -202,7 +202,7 @@ function LuminaContent() {
       
       {/* Footer */}
       <footer className="text-center py-12 text-zinc-600 text-sm">
-        <p>Expertly Architected by <span className="text-zinc-400">Yogesh Jadhav (Dynamo_14324)</span>.</p>
+        <p>Expertly Architected by <span className="text-zinc-400">Yogesh Jadhav (Dynamo_14324)</span> ❤️</p>
         <p className="mt-2 text-xs opacity-50">Powered by TMDB API • Next.js 14 • Tailwind</p>
       </footer>
     </main>
