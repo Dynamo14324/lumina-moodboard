@@ -17,6 +17,7 @@ export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove }: Watchl
       {isOpen && (
         <>
           <motion.div 
+            key="backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -24,6 +25,7 @@ export function WatchlistDrawer({ isOpen, onClose, watchlist, onRemove }: Watchl
             onClick={onClose}
           />
           <motion.div
+            key="drawer"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
