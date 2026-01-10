@@ -18,13 +18,20 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
     // Initialize Audio Context on user interaction (handled by standard browser policies, usually requires a click first)
     // We'll init it lazily or try to resume.
     if (!audioContextRef.current && typeof window !== "undefined") {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      audioContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       const gain = audioContextRef.current.createGain();
       gain.connect(audioContextRef.current.destination);
       gainNodeRef.current = gain;
       gain.gain.value = 0.1; // Low volume default
     }
   }, []);
+
+  const stopOscillators = () => {
+     oscillatorsRef.current.forEach(o => {
+         try { o.stop(); o.disconnect(); } catch {}
+     });
+     oscillatorsRef.current = [];
+  };
 
   useEffect(() => {
     if (!audioContextRef.current || !gainNodeRef.current) return;
@@ -141,12 +148,7 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
 
   }, [mood, muted, shouldDuck]);
 
-  const stopOscillators = () => {
-     oscillatorsRef.current.forEach(o => {
-         try { o.stop(); o.disconnect(); } catch(e) {}
-     });
-     oscillatorsRef.current = [];
-  };
+
 
   return (
     shouldDuck ? null : (

@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { X, Play, User, Calendar, Star, Clock } from "lucide-react";
 import { MovieDetails } from "@/lib/types";
 import { fetchMovieDetails, fetchWatchProviders } from "@/lib/api";
-import { cn } from "@/lib/utils";
 import { WatchProvider } from "@/lib/types";
 import { Share2, Globe } from "lucide-react";
+import Image from "next/image";
 
 interface MovieDetailsModalProps {
   movieId: number | null;
@@ -21,15 +21,19 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
 
   useEffect(() => {
     if (movieId) {
+      let isMounted = true;
       setLoading(true);
       Promise.all([
         fetchMovieDetails(movieId),
         fetchWatchProviders(movieId)
       ]).then(([data, providersData]) => {
-        setDetails(data);
-        setProviders(providersData);
-        setLoading(false);
+        if (isMounted) {
+            setDetails(data);
+            setProviders(providersData);
+            setLoading(false);
+        }
       });
+      return () => { isMounted = false; };
     } else {
       setDetails(null);
       setProviders(null);
@@ -67,10 +71,14 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
             {/* Backdrop Header */}
             <div className="relative h-64 sm:h-96 w-full overflow-hidden">
                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent z-10" />
-               <img 
+               <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent z-10" />
+               <Image 
                  src={`https://image.tmdb.org/t/p/original${details.backdrop_path}`} 
                  alt={details.title}
-                 className="w-full h-full object-cover"
+                 fill
+                 className="object-cover"
+                 sizes="(max-width: 768px) 100vw, 80vw"
+                 priority
                />
                <button 
                  onClick={onClose}
@@ -145,11 +153,15 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                        <div className="flex flex-wrap gap-4">
                            {providers.map((p) => (
                                <div key={p.provider_id} className="flex flex-col items-center gap-2" title={p.provider_name}>
-                                   <img 
-                                     src={`https://image.tmdb.org/t/p/original${p.logo_path}`} 
-                                     alt={p.provider_name}
-                                     className="w-12 h-12 rounded-lg shadow-md" 
-                                   />
+                                   <div className="w-12 h-12 relative rounded-lg shadow-md overflow-hidden">
+                                       <Image 
+                                         src={`https://image.tmdb.org/t/p/original${p.logo_path}`} 
+                                         alt={p.provider_name}
+                                         fill
+                                         className="object-cover"
+                                         sizes="48px"
+                                       />
+                                   </div>
                                    <span className="text-xs text-zinc-400 max-w-[60px] truncate text-center">{p.provider_name}</span>
                                </div>
                            ))}
