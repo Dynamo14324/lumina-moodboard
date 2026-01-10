@@ -2,14 +2,30 @@
 import { useState, useEffect } from "react";
 import { MoodSelector, MOODS } from "./components/MoodSelector";
 import { MovieGrid } from "./components/MovieGrid";
+import { AudioAmbience } from "./components/AudioAmbience";
 import { fetchMoviesByMood } from "@/lib/api";
+import { generateAIInsight } from "@/lib/ai-curator";
 import { Movie } from "@/lib/types";
 import { motion } from "framer-motion";
+import { useWatchlist } from "@/lib/useWatchlist";
+import { WatchlistDrawer } from "./components/WatchlistDrawer";
+import { Heart } from "lucide-react";
 
 export default function Home() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
+  
+  const { watchlist, addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const toggleWatchlist = (movie: Movie) => {
+    if (isInWatchlist(movie.id)) {
+      removeFromWatchlist(movie.id);
+    } else {
+      addToWatchlist(movie);
+    }
+  };
 
   useEffect(() => {
     if (selectedMood) {
@@ -17,7 +33,13 @@ export default function Home() {
       if (mood) {
         setLoading(true);
         fetchMoviesByMood('/discover/movie', mood.query_params)
-          .then(setMovies)
+          .then(data => {
+             const enriched = data.map(m => ({
+                ...m,
+                ai_insight: generateAIInsight(m, selectedMood)
+             }));
+             setMovies(enriched);
+          })
           .finally(() => setLoading(false));
       }
     }
@@ -25,6 +47,28 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-purple-500/30 overflow-x-hidden">
+      <AudioAmbience mood={selectedMood} />
+      <WatchlistDrawer 
+        isOpen={isDrawerOpen} 
+        onClose={() => setIsDrawerOpen(false)} 
+        watchlist={watchlist} 
+        onRemove={removeFromWatchlist}
+      />
+      
+      {/* My Stash Button */}
+      <button 
+        onClick={() => setIsDrawerOpen(true)}
+        className="fixed top-6 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 rounded-full transition-all group"
+      >
+        <Heart size={18} className={watchlist.length > 0 ? "fill-red-500 text-red-500" : "text-white group-hover:text-red-400"} />
+        <span className="text-sm font-medium hidden sm:inline">My Stash</span>
+        {watchlist.length > 0 && (
+            <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                {watchlist.length}
+            </span>
+        )}
+      </button>
+
       {/* Dynamic Background */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-[#050505] to-[#050505] -z-10" />
       
@@ -82,7 +126,12 @@ export default function Home() {
                <p className="text-sm uppercase tracking-widest">Select a mood to begin</p>
              </motion.div>
            )}
-           <MovieGrid movies={movies} loading={loading} />
+           <MovieGrid 
+             movies={movies} 
+             loading={loading} 
+             watchlist={watchlist}
+             onToggleWatchlist={toggleWatchlist}
+           />
         </div>
       </div>
       

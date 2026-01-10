@@ -1,4 +1,4 @@
-import { Movie, TMDBResponse } from './types';
+import { Movie, TMDBResponse, MovieDetails } from './types';
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -89,5 +89,34 @@ export async function fetchMoviesByMood(endpoint: string, params: Record<string,
   } catch (error) {
     console.error("Fetch error:", error);
     return SYNTHETIC_MOVIES; // Fallback on error
+  }
+}
+
+export async function fetchMovieDetails(id: number): Promise<MovieDetails | null> {
+  if (!API_KEY) {
+    // Return a synthetic detail object for God Mode
+    const synthetic = SYNTHETIC_MOVIES.find(m => m.id === id);
+    if (!synthetic) return null;
+    return {
+      ...synthetic,
+      runtime: 120,
+      videos: { results: [{ key: "dQw4w9WgXcQ", site: "YouTube", type: "Trailer", name: "Official Trailer", id: "1" }] },
+      credits: { cast: [{ id: 1, name: "Ryan Gosling", character: "K", profile_path: null }] },
+      genres: [{ id: 878, name: "Science Fiction" }]
+    };
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&append_to_response=videos,credits`, {
+      next: { revalidate: 3600 }
+    });
+
+    if (!res.ok) throw new Error(`TMDB Error: ${res.statusText}`);
+
+    const data: MovieDetails = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Fetch details error:", error);
+    return null;
   }
 }
