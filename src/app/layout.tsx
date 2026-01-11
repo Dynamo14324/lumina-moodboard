@@ -48,6 +48,7 @@ export const viewport: Viewport = {
 };
 
 import { WatchlistProvider } from "./context/WatchlistContext";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({
   children,
@@ -61,6 +62,7 @@ export default function RootLayout({
       >
         <WatchlistProvider>
           {children}
+          <Analytics />
         </WatchlistProvider>
         <script
           type="application/ld+json"
