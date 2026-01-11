@@ -58,16 +58,39 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
     
     const url = `${window.location.origin}?movie=${movieId}`;
     const posterUrl = details.poster_path ? (details.poster_path.startsWith('/') ? `https://image.tmdb.org/t/p/w500${details.poster_path}` : details.poster_path) : '';
-    const shareText = `🍿 Check out "${details.title}" on Lumina!\n\n"${details.overview}"\n\n${posterUrl ? `🖼️ Poster: ${posterUrl}\n\n` : ''}Discover more on Lumina Moodboard:\n`;
-    
+    const shareTitle = `Lumina | ${details.title}`;
+    const shareText = `🍿 Check out "${details.title}" on Lumina!\n\n"${details.overview}"\n\nDiscover more on Lumina Moodboard:\n`;
+
     try {
+      // Attempt to share the actual image file (works on most mobile browsers)
+      if (navigator.share && posterUrl) {
+        try {
+          const response = await fetch(posterUrl);
+          const blob = await response.blob();
+          const file = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
+          
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: shareTitle,
+              text: shareText + url,
+            });
+            return; // Success!
+          }
+        } catch (err) {
+          console.warn('File sharing not supported or failed:', err);
+        }
+      }
+
+      // Fallback to standard link sharing
       if (navigator.share) {
         await navigator.share({
-          title: `Lumina | ${details.title}`,
+          title: shareTitle,
           text: shareText,
           url: url,
         });
       } else {
+        // clipboard fallback
         await navigator.clipboard.writeText(`${shareText}${url}`);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
@@ -75,7 +98,6 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
     } catch (error) {
       if ((error as Error).name !== 'AbortError') {
         console.error('Error sharing:', error);
-        // Minimal fallback
         await navigator.clipboard.writeText(url);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
