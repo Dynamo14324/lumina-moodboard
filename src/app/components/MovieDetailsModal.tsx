@@ -53,11 +53,34 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
     return () => { isMounted = false; };
   }, [movieId]);
 
-  const handleShare = () => {
+  const handleShare = async () => {
+    if (!details) return;
+    
     const url = `${window.location.origin}?movie=${movieId}`;
-    navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const posterUrl = details.poster_path ? (details.poster_path.startsWith('/') ? `https://image.tmdb.org/t/p/w500${details.poster_path}` : details.poster_path) : '';
+    const shareText = `🍿 Check out "${details.title}" on Lumina!\n\n"${details.overview}"\n\n${posterUrl ? `🖼️ Poster: ${posterUrl}\n\n` : ''}Discover more on Lumina Moodboard:\n`;
+    
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `Lumina | ${details.title}`,
+          text: shareText,
+          url: url,
+        });
+      } else {
+        await navigator.clipboard.writeText(`${shareText}${url}`);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch (error) {
+      if ((error as Error).name !== 'AbortError') {
+        console.error('Error sharing:', error);
+        // Minimal fallback
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    }
   };
 
   if (!movieId) return null;
