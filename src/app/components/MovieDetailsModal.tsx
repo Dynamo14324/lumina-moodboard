@@ -57,40 +57,21 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
     if (!details) return;
     
     const url = `${window.location.origin}?movie=${movieId}`;
-    const posterUrl = details.poster_path ? (details.poster_path.startsWith('/') ? `https://image.tmdb.org/t/p/w500${details.poster_path}` : details.poster_path) : '';
+    // Enticing, high-conversion share text with emojis and clear CTA
     const shareTitle = `Lumina | ${details.title}`;
-    const shareText = `🍿 Check out "${details.title}" on Lumina!\n\n"${details.overview}"\n\nDiscover more on Lumina Moodboard:\n`;
+    const shareText = `� Found your next watch on Lumina!\n\n🍿 *${details.title}*\n"${details.overview.substring(0, 100)}..."\n\n✨ Experience the mood here:\n`;
 
     try {
-      // Attempt to share the actual image file (works on most mobile browsers)
-      if (navigator.share && posterUrl) {
-        try {
-          const response = await fetch(posterUrl);
-          const blob = await response.blob();
-          const file = new File([blob], 'poster.jpg', { type: 'image/jpeg' });
-          
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({
-              files: [file],
-              title: shareTitle,
-              text: shareText + url,
-            });
-            return; // Success!
-          }
-        } catch (err) {
-          console.warn('File sharing not supported or failed:', err);
-        }
-      }
-
-      // Fallback to standard link sharing
       if (navigator.share) {
+        // Sharing the title, text, and URL together 
+        // Platforms will use the URL to generate the "Eye Boggling" large preview card
         await navigator.share({
           title: shareTitle,
           text: shareText,
           url: url,
         });
       } else {
-        // clipboard fallback
+        // Fallback for desktop: Copy the enticing message to clipboard
         await navigator.clipboard.writeText(`${shareText}${url}`);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
