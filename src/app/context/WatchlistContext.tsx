@@ -19,14 +19,18 @@ export function WatchlistProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Load from local storage on mount
     const saved = localStorage.getItem("lumina_watchlist");
-    if (saved) {
-      try {
-        setWatchlist(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse watchlist", e);
-      }
-    }
-    setIsInitialized(true);
+    
+    // We defer updates to avoid the synchronous setState warning in React 19 / Next 16
+    Promise.resolve().then(() => {
+        if (saved) {
+            try {
+                setWatchlist(JSON.parse(saved));
+            } catch (e) {
+                console.error("Failed to parse watchlist", e);
+            }
+        }
+        setIsInitialized(true);
+    });
   }, []);
 
   useEffect(() => {

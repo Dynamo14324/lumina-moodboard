@@ -132,7 +132,7 @@ export async function fetchWatchProviders(id: number, region: string = "US"): Pr
     if (!res.ok) return null;
     const data = await res.json();
     return data.results?.[region]?.flatrate || data.results?.[region]?.buy || null;
-  } catch (e) {
+  } catch {
     return null;
   }
 }
