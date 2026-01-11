@@ -2,7 +2,6 @@
 import Image from "next/image";
 
 import { X, Trash2, Heart } from "lucide-react";
-import { Movie } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useWatchlist } from "@/lib/useWatchlist";

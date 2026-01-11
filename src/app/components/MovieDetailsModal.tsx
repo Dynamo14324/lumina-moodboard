@@ -249,10 +249,17 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                             {details.credits.cast.slice(0, 10).map((actor) => (
-                                <div key={actor.id} className="bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
+                                <a 
+                                    key={actor.id} 
+                                    href={`https://www.google.com/search?q=watch+${encodeURIComponent(details.title)}+${encodeURIComponent(actor.name)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all group block"
+                                    title={`Search for ${details.title} with ${actor.name}`}
+                                >
                                     <div className="aspect-[2/3] w-full rounded-md overflow-hidden bg-gray-800 mb-2">
                                         {actor.profile_path ? (
-                                             <div className="relative w-full h-full">
+                                             <div className="relative w-full h-full group-hover:scale-105 transition-transform duration-500">
                                                 <Image 
                                                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`} 
                                                    alt={actor.name}
@@ -267,9 +274,9 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                                             </div>
                                         )}
                                     </div>
-                                    <p className="text-white font-medium text-sm truncate">{actor.name}</p>
+                                    <p className="text-white font-medium text-sm truncate group-hover:text-primary-400 transition-colors">{actor.name}</p>
                                     <p className="text-white/50 text-xs truncate">{actor.character}</p>
-                                </div>
+                                </a>
                             ))}
                         </div>
                     </div>

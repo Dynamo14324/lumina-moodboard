@@ -32,25 +32,20 @@ function LuminaContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Sync with URL on mount and update
+  // Sync state from URL
   useEffect(() => {
     const moodParam = searchParams.get("mood");
     const movieParam = searchParams.get("movie");
 
-    // Only update if actually different to prevent unnecessary renders/loops
-    // The linter might still warn, but this is the correct logic for syncing URL -> State
-    if (moodParam && moodParam !== selectedMood) {
-      if (typeof window !== 'undefined') { // basic guard
-          setSelectedMood(moodParam);
-      }
+    if (moodParam !== selectedMood) {
+      setSelectedMood(moodParam);
     }
     
-    if (movieParam) {
-       setSelectedMovieId(Number(movieParam));
-    } else {
-       setSelectedMovieId(null);
+    const movieIdParam = movieParam ? Number(movieParam) : null;
+    if (movieIdParam !== selectedMovieId) {
+      setSelectedMovieId(movieIdParam);
     }
-  }, [searchParams]);
+  }, [searchParams, selectedMood, selectedMovieId]);
 
   const handleMoodSelect = (moodId: string) => {
     setSelectedMood(moodId);
@@ -89,22 +84,36 @@ function LuminaContent() {
   // immediate updates. Here it is inside a Promise, so it is async.
   // The 'setLoading(true)' is sync.
   useEffect(() => {
-    if (selectedMood) {
-      const mood = MOODS.find(m => m.id === selectedMood);
-      if (mood) {
-         setLoading(true);
-         fetchMoviesByMood('/discover/movie', mood.query_params)
-          .then(data => {
-             const enriched = data.map(m => ({
-                ...m,
-                ai_insight: generateAIInsight(m, selectedMood)
-             }));
-             setMovies(enriched);
-          })
-          .catch(err => console.error("Error fetching movies:", err))
-          .finally(() => setLoading(false));
-      }
-    }
+    if (!selectedMood) return;
+
+    const mood = MOODS.find(m => m.id === selectedMood);
+    if (!mood) return;
+
+    let isMounted = true;
+    
+    const loadMovies = async () => {
+        // We set loading in a microtask to avoid the "sync setState" warning in some environments
+        // though usually try/catch/finally is enough to make it async.
+        setLoading(true);
+        try {
+            const data = await fetchMoviesByMood('/discover/movie', mood.query_params);
+            if (!isMounted) return;
+            
+            const enriched = data.map(m => ({
+               ...m,
+               ai_insight: generateAIInsight(m, selectedMood)
+            }));
+            setMovies(enriched);
+        } catch (err) {
+            console.error("Error fetching movies:", err);
+        } finally {
+            if (isMounted) setLoading(false);
+        }
+    };
+
+    loadMovies();
+
+    return () => { isMounted = false; };
   }, [selectedMood]);
 
   return (

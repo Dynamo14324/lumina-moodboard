@@ -2,7 +2,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Movie } from "@/lib/types";
-import { Heart } from "lucide-react";
+import { Heart, Play } from "lucide-react";
 import Image from "next/image";
 
 interface MovieGridProps {
@@ -42,6 +42,15 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
             className="group relative aspect-[2/3] rounded-xl overflow-hidden bg-zinc-950 border border-white/5 hover:border-white/20 transition-colors cursor-pointer"
             onClick={() => onSelectMovie(movie.id)}
           >
+             <a 
+                href={`https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}+details`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sr-only"
+                onClick={(e) => e.stopPropagation()}
+             >
+                Watch {movie.title} details and cast
+             </a>
              <button
                 onClick={(e) => { e.stopPropagation(); onToggleWatchlist(movie); }}
                 className="absolute top-2 right-2 z-30 p-2 rounded-full bg-black/40 hover:bg-white/20 text-white transition-colors opacity-0 group-hover:opacity-100"
@@ -76,7 +85,21 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
                   <span>★ {movie.vote_average.toFixed(1)}</span>
                   <span className="text-zinc-400">• {movie.release_date.split('-')[0]}</span>
                 </div>
-                <p className="text-xs text-zinc-300 line-clamp-4 leading-relaxed">{movie.overview}</p>
+                
+                <p className="text-xs text-zinc-300 line-clamp-3 leading-relaxed mb-4">{movie.overview}</p>
+                
+                <div className="flex items-center gap-2 mt-auto">
+                    <a 
+                        href={`https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex-1 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg text-xs font-semibold text-center transition-all flex items-center justify-center gap-2 group/btn"
+                    >
+                        <Play size={14} className="fill-white" />
+                        Watch Now
+                    </a>
+                </div>
              </div>
           </motion.div>
         ))}
