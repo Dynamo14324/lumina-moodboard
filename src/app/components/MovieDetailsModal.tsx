@@ -251,11 +251,12 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                             {details.credits.cast.slice(0, 10).map((actor) => (
                                 <a 
                                     key={actor.id} 
-                                    href={`https://www.google.com/search?q=watch+${encodeURIComponent(details.title)}+${encodeURIComponent(actor.name)}`}
+                                    href={`https://www.google.com/search?q=watch+${encodeURIComponent(details.title)}+movie+${encodeURIComponent(actor.name)}+cast`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all group block"
-                                    title={`Search for ${details.title} with ${actor.name}`}
+                                    className="bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all group block cursor-pointer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    title={`Watch ${details.title} movie ${actor.name} cast`}
                                 >
                                     <div className="aspect-[2/3] w-full rounded-md overflow-hidden bg-gray-800 mb-2">
                                         {actor.profile_path ? (
@@ -274,8 +275,11 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                                             </div>
                                         )}
                                     </div>
-                                    <p className="text-white font-medium text-sm truncate group-hover:text-primary-400 transition-colors">{actor.name}</p>
-                                    <p className="text-white/50 text-xs truncate">{actor.character}</p>
+                                    <div className="flex flex-col gap-0.5">
+                                        <p className="text-white font-medium text-sm truncate group-hover:text-primary-400 transition-colors">{actor.name}</p>
+                                        <p className="text-white/50 text-xs truncate">{actor.character}</p>
+                                        <p className="text-[10px] text-zinc-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Search on Google ↗</p>
+                                    </div>
                                 </a>
                             ))}
                         </div>

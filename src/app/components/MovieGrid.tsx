@@ -43,13 +43,22 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
             onClick={() => onSelectMovie(movie.id)}
           >
              <a 
-                href={`https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}+details`}
+                href={`https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}+details+and+cast`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="sr-only"
                 onClick={(e) => e.stopPropagation()}
              >
-                Watch {movie.title} details and cast
+                Watch {movie.title} details and its cast members
+             </a>
+             <a 
+                href={`https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sr-only"
+                onClick={(e) => e.stopPropagation()}
+             >
+                Watch {movie.title}
              </a>
              <button
                 onClick={(e) => { e.stopPropagation(); onToggleWatchlist(movie); }}
