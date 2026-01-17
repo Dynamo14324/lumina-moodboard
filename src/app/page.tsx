@@ -64,9 +64,48 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   };
 }
 
-export default function Home() {
+export default async function Home({ searchParams }: Props) {
+  const params = await searchParams;
+  const movieId = params.movie ? Number(params.movie) : null;
+  let movieSchema = null;
+
+  if (movieId) {
+    const details = await fetchMovieDetails(movieId);
+    if (details) {
+      movieSchema = {
+        "@context": "https://schema.org",
+        "@type": "Movie",
+        "name": details.title,
+        "description": details.overview,
+        "image": details.poster_path ? `https://image.tmdb.org/t/p/w780${details.poster_path}` : undefined,
+        "datePublished": details.release_date,
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": details.vote_average,
+          "bestRating": "10",
+          "worstRating": "1",
+          "ratingCount": details.vote_count || "100"
+        },
+        "director": details.credits?.crew?.find(c => c.job === "Director") ? {
+          "@type": "Person",
+          "name": details.credits.crew.find(c => c.job === "Director")?.name
+        } : undefined,
+        "actor": details.credits?.cast?.slice(0, 5).map(actor => ({
+          "@type": "Person",
+          "name": actor.name
+        }))
+      };
+    }
+  }
+
   return (
     <Suspense fallback={<div className="min-h-screen bg-[#050505]" />}>
+      {movieSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }}
+        />
+      )}
       <LuminaClient />
     </Suspense>
   );

@@ -102,7 +102,10 @@ export async function fetchMovieDetails(id: number): Promise<MovieDetails | null
       ...synthetic,
       runtime: 120,
       videos: { results: [{ key: "dQw4w9WgXcQ", site: "YouTube", type: "Trailer", name: "Official Trailer", id: "1" }] },
-      credits: { cast: [{ id: 1, name: "Ryan Gosling", character: "K", profile_path: null }] },
+      credits: { 
+        cast: [{ id: 1, name: "Ryan Gosling", character: "K", profile_path: null }],
+        crew: [{ id: 2, name: "Denis Villeneuve", job: "Director", department: "Directing" }]
+      },
       genres: [{ id: 878, name: "Science Fiction" }]
     };
   }

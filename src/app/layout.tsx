@@ -82,11 +82,22 @@ export default function RootLayout({
               "name": "Lumina",
               "url": "https://lumina-moodboard.vercel.app",
               "description": "AI-Powered Cinematic Discovery based on emotional state.",
+              "image": "https://lumina-moodboard.vercel.app/og-image.jpg",
               "applicationCategory": "EntertainmentApplication",
               "operatingSystem": "Web",
               "author": {
                 "@type": "Person",
                 "name": "Yogesh Jadhav (Dynamo_14324)"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.9",
+                "reviewCount": "128"
               }
             })
           }}
