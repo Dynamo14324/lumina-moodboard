@@ -16,28 +16,23 @@ export default async function Image() {
   return new ImageResponse(
     (
       <div
-        // @ts-expect-error: Satori supports 'tw' prop
         tw="w-full h-full flex flex-col items-center justify-center bg-[#050505] text-white font-sans relative"
       >
         {/* Background Gradient */}
         <div 
-            // @ts-expect-error: Satori supports 'tw' prop
             tw="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.2)_0%,#050505_70%)]"
         />
 
         <div 
-            // @ts-expect-error: Satori supports 'tw' prop
             tw="flex items-center gap-[20px] z-10"
         >
             {/* Logo Placeholder */}
             <div 
-                // @ts-expect-error: Satori supports 'tw' prop
                 tw="w-[80px] h-[80px] rounded-full bg-[linear-gradient(135deg,#6366f1,#a855f7)] flex items-center justify-center text-[40px]"
             >
                 ✨
             </div>
             <h1 
-                // @ts-expect-error: Satori supports 'tw' prop
                 tw="text-[80px] font-bold m-0 tracking-[-2px]"
             >
                 Lumina
@@ -45,7 +40,6 @@ export default async function Image() {
         </div>
 
         <p 
-            // @ts-expect-error: Satori supports 'tw' prop
             tw="text-[32px] opacity-80 mt-[20px] max-w-[800px] text-center leading-[1.4] z-10"
         >
             Stop searching. Start feeling. 
@@ -54,7 +48,6 @@ export default async function Image() {
         </p>
 
         <div 
-            // @ts-expect-error: Satori supports 'tw' prop
             tw="absolute bottom-[40px] text-[20px] opacity-50 z-10"
         >
             lumina-moodboard.vercel.app
