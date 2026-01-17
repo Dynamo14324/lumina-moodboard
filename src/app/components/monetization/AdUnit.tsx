@@ -22,7 +22,7 @@ export function AdUnit({
 }: AdUnitProps) {
   const [isVisible, setIsVisible] = useState(false);
   const adRef = useRef<HTMLDivElement>(null);
-  const [adFilled, setAdFilled] = useState(false);
+  const adFilled = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,16 +45,16 @@ export function AdUnit({
   }, []);
 
   useEffect(() => {
-    if (isVisible && !testMode && adClient && adSlot && !adFilled) {
+    if (isVisible && !testMode && adClient && adSlot && !adFilled.current) {
         try {
-            // @ts-ignore
+            // @ts-expect-error Google Ads global is not typed
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-            setAdFilled(true);
+            adFilled.current = true;
         } catch (err) {
             console.error("AdSense error:", err);
         }
     }
-  }, [isVisible, testMode, adClient, adSlot, adFilled]);
+  }, [isVisible, testMode, adClient, adSlot]);
 
   // Determine size based on slot to prevent CLS
   const getSizeClass = () => {
