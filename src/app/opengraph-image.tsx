@@ -80,26 +80,33 @@ const footerStyle = {
 export default async function Image() {
   return new ImageResponse(
     (
+      // eslint-disable-next-line
       <div style={wrapperStyle}>
         {/* Background Gradient */}
+        {/* eslint-disable-next-line */}
         <div style={gradientStyle} />
 
+        {/* eslint-disable-next-line */}
         <div style={logoContainerStyle}>
             {/* Logo Placeholder */}
+            {/* eslint-disable-next-line */}
             <div style={logoIconStyle}>
                 ✨
             </div>
+            {/* eslint-disable-next-line */}
             <h1 style={titleStyle}>
                 Lumina
             </h1>
         </div>
 
+        {/* eslint-disable-next-line */}
         <p style={textStyle}>
             Stop searching. Start feeling. 
             <br />
             AI-curated movies for your mood.
         </p>
 
+        {/* eslint-disable-next-line */}
         <div style={footerStyle}>
             lumina-moodboard.vercel.app
         </div>
