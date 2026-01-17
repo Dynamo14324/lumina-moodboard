@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     description: "Stop searching. Start feeling.",
     creator: "@ArchitectZero",
   },
+  verification: {
+    google: "obzzOO71sAtCGXuUvepGOqPBOrQzyLdg1Xw8-it2-1k",
+  },
 };
 
 export const viewport: Viewport = {
