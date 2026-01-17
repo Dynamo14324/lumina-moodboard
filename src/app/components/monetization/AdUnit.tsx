@@ -15,14 +15,21 @@ interface AdUnitProps {
 export function AdUnit({ 
     slot, 
     className = "", 
-    testMode = true, // Default to true until configured
-    adClient = process.env.NEXT_PUBLIC_ADSENSE_ID, // Use env variable
-    adSlot, // Specific slot ID from AdSense dashboard
+    testMode = false, // Default to FALSE to enable live connection
+    adClient = process.env.NEXT_PUBLIC_ADSENSE_ID, 
+    adSlot,
     format = "auto"
 }: AdUnitProps) {
   const [isVisible, setIsVisible] = useState(false);
   const adRef = useRef<HTMLDivElement>(null);
   const adFilled = useRef(false);
+
+  // Auto-map slots to env vars if specific ID not provided
+  const effectiveAdSlot = adSlot || (
+    slot === "footer" ? process.env.NEXT_PUBLIC_AD_SLOT_FOOTER :
+    slot === "card" ? process.env.NEXT_PUBLIC_AD_SLOT_CARD :
+    undefined
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,7 +52,7 @@ export function AdUnit({
   }, []);
 
   useEffect(() => {
-    if (isVisible && !testMode && adClient && adSlot && !adFilled.current) {
+    if (isVisible && !testMode && adClient && effectiveAdSlot && !adFilled.current) {
         try {
             // @ts-expect-error Google Ads global is not typed
             (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -54,7 +61,7 @@ export function AdUnit({
             console.error("AdSense error:", err);
         }
     }
-  }, [isVisible, testMode, adClient, adSlot]);
+  }, [isVisible, testMode, adClient, effectiveAdSlot]);
 
   // Determine size based on slot to prevent CLS
   const getSizeClass = () => {
@@ -68,7 +75,7 @@ export function AdUnit({
   };
 
   // If no client ID provided and strict mode is off, show placeholder
-  const showPlaceholder = testMode || !adClient || !adSlot;
+  const showPlaceholder = testMode || !adClient || !effectiveAdSlot;
 
   return (
     <div 
@@ -78,26 +85,25 @@ export function AdUnit({
         {showPlaceholder && (
             <div className="absolute top-2 right-2 text-[10px] text-white/20 uppercase font-bold tracking-widest border border-white/10 px-1 rounded z-10">Sponsored</div>
         )}
-        
         <AnimatePresence>
             {isVisible ? (
-                showPlaceholder ? (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full h-full flex items-center justify-center"
-                    >
-                        <span className="text-zinc-500 text-xs font-medium">Safe Ad Space ({slot})</span>
-                    </motion.div>
+                (testMode || !adClient || !effectiveAdSlot) ? (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900/50 border border-white/5 rounded-xl text-center p-4">
+                        <span className="text-[10px] uppercase tracking-widest text-zinc-600 font-medium mb-2">
+                            Sponsored
+                        </span>
+                        <p className="text-zinc-500 text-sm">
+                            Safe Ad Space ({slot})
+                        </p>
+                    </div>
                 ) : (
                     <div className="w-full h-full">
                         {/* Real AdSense Unit */}
                         <ins className="adsbygoogle block w-full h-full"
-                             data-ad-client={adClient}
-                             data-ad-slot={adSlot}
-                             data-ad-format={format}
-                             data-full-width-responsive="true">
+                                data-ad-client={adClient}
+                                data-ad-slot={effectiveAdSlot}
+                                data-ad-format={format}
+                                data-full-width-responsive="true">
                         </ins>
                     </div>
                 )
