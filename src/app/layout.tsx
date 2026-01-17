@@ -58,6 +58,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieConsent } from "./components/privacy/CookieConsent";
 import { GoogleAdSense } from "./components/monetization/GoogleAdSense";
 
+import { MonetizationConfig } from "@/lib/monetization";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -77,7 +79,7 @@ export default function RootLayout({
           <CookieConsent />
           <Analytics />
           <SpeedInsights />
-          <GoogleAdSense publisherId={process.env.NEXT_PUBLIC_ADSENSE_ID || ""} />
+          <GoogleAdSense publisherId={MonetizationConfig.adClient} />
         </WatchlistProvider>
         <script
           type="application/ld+json"
