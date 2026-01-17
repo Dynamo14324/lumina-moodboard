@@ -33,6 +33,7 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
      oscillatorsRef.current = [];
   };
 
+  // Effect 1: Handle Sound Generation (Mood/Muted)
   useEffect(() => {
     if (!audioContextRef.current || !gainNodeRef.current) return;
 
@@ -46,26 +47,13 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
       ctx.resume().catch(() => {});
     }
 
+    // Only restart oscillators if the mood has actually changed or we just unmuted
     stopOscillators();
     
     // Create new soundscape based on mood
-    const now = ctx.currentTime;
-    // Fade out old (if handled by stop) -> we just hard stop for now for simplicity
-    
-    // Master gain fade in
-    gainNodeRef.current.gain.cancelScheduledValues(now);
-    gainNodeRef.current.gain.setValueAtTime(0, now);
-    const targetVolume = shouldDuck ? 0 : 0.1;
-    gainNodeRef.current.gain.cancelScheduledValues(now);
-    gainNodeRef.current.gain.setValueAtTime(gainNodeRef.current.gain.value, now);
-    gainNodeRef.current.gain.linearRampToValueAtTime(targetVolume, now + 1);
-
-    if (shouldDuck) return; // Don't restart oscs if just ducking, just wait.
-    
     const oscs: OscillatorNode[] = [];
 
     if (mood === "adrenaline") {
-        // Deep throbbing drone
         const osc1 = ctx.createOscillator();
         osc1.type = "sawtooth";
         osc1.frequency.value = 50; 
@@ -76,7 +64,7 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
 
         const lfo = ctx.createOscillator();
         lfo.type = "sine";
-        lfo.frequency.value = 4; // 4Hz throb
+        lfo.frequency.value = 4;
         const lfoGain = ctx.createGain();
         lfoGain.gain.value = 200;
         lfo.connect(lfoGain);
@@ -88,18 +76,14 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
         osc1.start();
         oscs.push(osc1, lfo);
     } else if (mood === "ethereal") {
-        // High shimmering sine waves
         [220, 330, 440, 554].forEach((freq, i) => {
             const osc = ctx.createOscillator();
             osc.type = "sine";
             osc.frequency.value = freq;
-            
             const panner = ctx.createStereoPanner();
             panner.pan.value = (i % 2 === 0 ? -1 : 1) * 0.5;
-
             const oscGain = ctx.createGain();
             oscGain.gain.value = 0.05;
-
             osc.connect(oscGain);
             oscGain.connect(panner);
             panner.connect(gainNodeRef.current!);
@@ -107,7 +91,6 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
             oscs.push(osc);
         });
     } else if (mood === "melancholy") {
-        // Minor pad (Triangle)
         [110, 130, 164].forEach((freq) => {
              const osc = ctx.createOscillator();
              osc.type = "triangle";
@@ -117,7 +100,6 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
              oscs.push(osc);
         });
     } else if (mood === "wholesome") {
-        // Major C chord (Warm)
         [261.63, 329.63, 392.00].forEach((freq) => {
              const osc = ctx.createOscillator();
              osc.type = "sine";
@@ -127,17 +109,14 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
              oscs.push(osc);
         });
     } else if (mood === "cerebral") {
-        // Complex pulsing waves
         const osc = ctx.createOscillator();
         osc.frequency.value = 60;
         const fm = ctx.createOscillator();
         fm.frequency.value = 110;
         const fmGain = ctx.createGain();
         fmGain.gain.value = 30;
-        
         fm.connect(fmGain);
         fmGain.connect(osc.frequency);
-        
         osc.connect(gainNodeRef.current!);
         osc.start();
         fm.start();
@@ -146,7 +125,20 @@ export function AudioAmbience({ mood, shouldDuck = false }: AudioAmbienceProps) 
 
     oscillatorsRef.current = oscs;
 
-  }, [mood, muted, shouldDuck]);
+    return () => stopOscillators();
+  }, [mood, muted]);
+
+  // Effect 2: Handle Volume (Ducking/Muting)
+  useEffect(() => {
+    if (!gainNodeRef.current || !audioContextRef.current) return;
+    
+    const now = audioContextRef.current.currentTime;
+    const targetVolume = (muted || !mood) ? 0 : (shouldDuck ? 0.02 : 0.1);
+    
+    gainNodeRef.current.gain.cancelScheduledValues(now);
+    gainNodeRef.current.gain.setValueAtTime(gainNodeRef.current.gain.value, now);
+    gainNodeRef.current.gain.linearRampToValueAtTime(targetVolume, now + 1.5); // Smooth 1.5s transition
+  }, [shouldDuck, muted, mood]);
 
 
 

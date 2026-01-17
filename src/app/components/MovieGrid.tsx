@@ -1,9 +1,11 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
+import { memo } from "react";
 
 import { Movie } from "@/lib/types";
 import { Heart, Play } from "lucide-react";
 import Image from "next/image";
+import { AdUnit } from "./monetization/AdUnit";
 
 interface MovieGridProps {
   movies: Movie[];
@@ -13,7 +15,7 @@ interface MovieGridProps {
   onSelectMovie: (id: number) => void;
 }
 
-export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSelectMovie }: MovieGridProps) {
+export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSelectMovie }: MovieGridProps) {
 
   if (loading) {
     return (
@@ -27,21 +29,23 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
 
   return (
     <>
-      <motion.div 
-        layout
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4"
-      >
-      <AnimatePresence mode="popLayout">
-        {movies.map((movie) => (
-          <motion.div
-            key={movie.id}
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: "spring", damping: 20, stiffness: 300 }}
-            className="group relative aspect-[2/3] rounded-xl overflow-hidden bg-zinc-950 border border-white/5 hover:border-white/20 transition-colors cursor-pointer"
-            onClick={() => onSelectMovie(movie.id)}
-          >
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
+      <AnimatePresence mode="wait">
+        {movies.map((movie, index) => (
+          <div key={movie.id} className="contents">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                transition={{ 
+                type: "spring", 
+                damping: 30, 
+                stiffness: 200,
+                delay: index * 0.05 
+                }}
+                className="group relative aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-950 border border-white/5 hover:border-indigo-500/50 transition-all duration-500 cursor-pointer shadow-2xl"
+                onClick={() => onSelectMovie(movie.id)}
+            >
              <a 
                 href={`https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}+details+and+cast`}
                 target="_blank"
@@ -111,9 +115,20 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
                 </div>
              </div>
           </motion.div>
+          {(index === 3 || (index > 3 && (index - 3) % 12 === 0)) && (
+            <motion.div
+               initial={{ opacity: 0, scale: 0.9 }}
+               animate={{ opacity: 1, scale: 1 }}
+               transition={{ delay: 0.2 }}
+               className="aspect-[2/3] w-full"
+            >
+                <AdUnit slot="card" className="w-full h-full" />
+            </motion.div>
+          )}
+          </div>
         ))}
       </AnimatePresence>
-      </motion.div>
+    </div>
     </>
   );
-}
+});

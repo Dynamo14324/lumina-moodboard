@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { MoodSelector, MOODS } from "./components/MoodSelector";
 import { MovieGrid } from "./components/MovieGrid";
 import { AudioAmbience } from "./components/AudioAmbience";
@@ -12,6 +12,8 @@ import { WatchlistDrawer } from "./components/WatchlistDrawer";
 import { Heart } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MovieDetailsModal } from "./components/MovieDetailsModal";
+import { SupportButton } from "./components/monetization/SupportButton";
+import { AdUnit } from "./components/monetization/AdUnit";
 
 export function LuminaClient() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
@@ -39,34 +41,34 @@ export function LuminaClient() {
     }
   }, [searchParams, selectedMood, selectedMovieId]);
 
-  const handleMoodSelect = (moodId: string) => {
+  const handleMoodSelect = useCallback((moodId: string) => {
     setSelectedMood(moodId);
     const params = new URLSearchParams(searchParams.toString());
     params.set("mood", moodId);
     router.push(`?${params.toString()}`);
-  };
+  }, [router, searchParams]);
 
-  const handleMovieSelect = (movieId: number) => {
+  const handleMovieSelect = useCallback((movieId: number) => {
     setSelectedMovieId(movieId);
     const params = new URLSearchParams(searchParams.toString());
     params.set("movie", String(movieId));
     router.push(`?${params.toString()}`);
-  };
+  }, [router, searchParams]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setSelectedMovieId(null);
     const params = new URLSearchParams(searchParams.toString());
     params.delete("movie");
     router.push(`?${params.toString()}`);
-  };
+  }, [router, searchParams]);
 
-  const toggleWatchlist = (movie: Movie) => {
+  const toggleWatchlist = useCallback((movie: Movie) => {
     if (isInWatchlist(movie.id)) {
       removeFromWatchlist(movie.id);
     } else {
       addToWatchlist(movie);
     }
-  };
+  }, [isInWatchlist, removeFromWatchlist, addToWatchlist]);
 
   useEffect(() => {
     if (!selectedMood) return;
@@ -189,9 +191,18 @@ export function LuminaClient() {
         </div>
       </div>
       
-      <footer className="text-center py-12 text-zinc-300 text-sm">
-        <p>Expertly Architected by <span className="text-white">Yogesh Jadhav (Dynamo_14324)</span> ❤️</p>
-        <p className="mt-2 text-xs text-zinc-400">Powered by TMDB API • Next.js 14 • Tailwind</p>
+      <div className="container mx-auto max-w-7xl px-4 mb-12">
+        <AdUnit slot="footer" className="mx-auto" />
+      </div>
+
+      <footer className="relative z-10 text-center py-12 text-zinc-300 text-sm border-t border-white/5 bg-[#050505]/50 backdrop-blur-xl">
+        <div className="flex flex-col items-center gap-6">
+            <SupportButton />
+            <div>
+                <p>Expertly Architected by <span className="text-white">Yogesh Jadhav (Dynamo_14324)</span> ❤️</p>
+                <p className="mt-2 text-xs text-zinc-400">Powered by TMDB API • Next.js 14 • Tailwind</p>
+            </div>
+        </div>
       </footer>
     </main>
   );

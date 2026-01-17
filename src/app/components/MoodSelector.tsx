@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { memo } from "react";
 import { cn } from "@/lib/utils";
 import { Mood } from "@/lib/types";
 
@@ -52,7 +53,7 @@ interface Props {
   onSelect: (id: string) => void;
 }
 
-export function MoodSelector({ selected, onSelect }: Props) {
+export const MoodSelector = memo(function MoodSelector({ selected, onSelect }: Props) {
   return (
     <div className="flex flex-wrap gap-4 justify-center py-8">
       {MOODS.map((mood) => {
@@ -88,4 +89,4 @@ export function MoodSelector({ selected, onSelect }: Props) {
       })}
     </div>
   );
-}
+});

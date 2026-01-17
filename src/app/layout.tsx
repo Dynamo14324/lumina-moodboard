@@ -53,6 +53,8 @@ export const viewport: Viewport = {
 import { WatchlistProvider } from "./context/WatchlistContext";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { CookieConsent } from "./components/privacy/CookieConsent";
+import { GoogleAdSense } from "./components/monetization/GoogleAdSense";
 
 export default function RootLayout({
   children,
@@ -70,8 +72,10 @@ export default function RootLayout({
       >
         <WatchlistProvider>
           {children}
+          <CookieConsent />
           <Analytics />
           <SpeedInsights />
+          <GoogleAdSense publisherId={process.env.NEXT_PUBLIC_ADSENSE_ID || ""} />
         </WatchlistProvider>
         <script
           type="application/ld+json"
