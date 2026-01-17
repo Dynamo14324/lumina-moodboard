@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-dom-props */
 import { ImageResponse } from 'next/og'
  
 // Route segment config

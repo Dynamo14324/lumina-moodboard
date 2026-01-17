@@ -93,8 +93,7 @@ export function AdUnit({
                 ) : (
                     <div className="w-full h-full">
                         {/* Real AdSense Unit */}
-                        <ins className="adsbygoogle"
-                             style={{ display: 'block', height: '100%', width: '100%' }}
+                        <ins className="adsbygoogle block w-full h-full"
                              data-ad-client={adClient}
                              data-ad-slot={adSlot}
                              data-ad-format={format}
