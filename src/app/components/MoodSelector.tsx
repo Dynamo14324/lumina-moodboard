@@ -79,8 +79,8 @@ export function MoodSelector({ selected, onSelect }: Props) {
              <div className="relative z-10 flex flex-col items-center gap-2">
                 <span className="text-4xl filter drop-shadow-lg mb-2">{mood.emoji}</span>
                 <div className="text-center">
-                  <h3 className="font-bold text-white/90 text-lg">{mood.label}</h3>
-                  <p className="text-xs text-zinc-400 group-hover:text-zinc-300 transition-colors">{mood.description}</p>
+                  <h2 className="font-bold text-white/90 text-lg">{mood.label}</h2>
+                  <p className="text-xs text-zinc-300 group-hover:text-zinc-200 transition-colors uppercase tracking-wider">{mood.description}</p>
                 </div>
              </div>
           </motion.button>

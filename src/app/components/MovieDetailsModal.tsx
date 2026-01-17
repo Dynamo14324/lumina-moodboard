@@ -304,7 +304,7 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                                     <div className="flex flex-col gap-0.5">
                                         <p className="text-white font-medium text-sm truncate group-hover:text-primary-400 transition-colors">{actor.name}</p>
                                         <p className="text-white/50 text-xs truncate">{actor.character}</p>
-                                        <p className="text-[10px] text-zinc-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Search on Google ↗</p>
+                                        <p className="text-[10px] text-zinc-300 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Search on Google ↗</p>
                                     </div>
                                 </a>
                             ))}

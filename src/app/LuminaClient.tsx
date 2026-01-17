@@ -112,6 +112,8 @@ export function LuminaClient() {
       <button 
         onClick={() => setIsDrawerOpen(true)}
         className="fixed top-6 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 rounded-full transition-all group"
+        aria-label="View My Stash"
+        title="View My Stash"
       >
         <Heart size={18} className={watchlist.length > 0 ? "fill-red-500 text-red-500" : "text-white group-hover:text-red-400"} />
         <span className="text-sm font-medium hidden sm:inline">My Stash</span>
@@ -172,9 +174,9 @@ export function LuminaClient() {
              <motion.div 
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
-               className="flex flex-col items-center justify-center text-zinc-600 h-64 border border-dashed border-white/10 rounded-2xl bg-white/[0.02]"
+               className="flex flex-col items-center justify-center text-zinc-300 h-64 border border-dashed border-white/10 rounded-2xl bg-white/[0.02]"
              >
-               <p className="text-sm uppercase tracking-widest">Select a mood to begin</p>
+               <p className="text-sm uppercase tracking-widest text-zinc-300">Select a mood to begin</p>
              </motion.div>
            )}
            <MovieGrid 
@@ -187,9 +189,9 @@ export function LuminaClient() {
         </div>
       </div>
       
-      <footer className="text-center py-12 text-zinc-600 text-sm">
-        <p>Expertly Architected by <span className="text-zinc-400">Yogesh Jadhav (Dynamo_14324)</span> ❤️</p>
-        <p className="mt-2 text-xs opacity-50">Powered by TMDB API • Next.js 14 • Tailwind</p>
+      <footer className="text-center py-12 text-zinc-300 text-sm">
+        <p>Expertly Architected by <span className="text-white">Yogesh Jadhav (Dynamo_14324)</span> ❤️</p>
+        <p className="mt-2 text-xs text-zinc-400">Powered by TMDB API • Next.js 14 • Tailwind</p>
       </footer>
     </main>
   );

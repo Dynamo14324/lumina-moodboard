@@ -84,7 +84,7 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
              )}
              
              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 select-none">
-                <h4 className="text-xl font-bold text-white mb-1 leading-tight">{movie.title}</h4>
+                <h3 className="text-xl font-bold text-white mb-1 leading-tight">{movie.title}</h3>
                 {movie.ai_insight && (
                   <div className="mb-2 px-2 py-1 bg-indigo-500/20 border border-indigo-500/30 rounded text-[10px] text-indigo-300 font-medium inline-block backdrop-blur-sm">
                      ✨ AI Insight: {movie.ai_insight}
@@ -92,7 +92,7 @@ export function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSel
                 )}
                 <div className="flex items-center gap-2 text-yellow-400 text-sm mb-3 font-medium">
                   <span>★ {movie.vote_average.toFixed(1)}</span>
-                  <span className="text-zinc-400">• {movie.release_date.split('-')[0]}</span>
+                  <span className="text-zinc-300">• {movie.release_date.split('-')[0]}</span>
                 </div>
                 
                 <p className="text-xs text-zinc-300 line-clamp-3 leading-relaxed mb-4">{movie.overview}</p>

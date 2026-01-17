@@ -61,6 +61,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://image.tmdb.org" />
+        <link rel="dns-prefetch" href="https://image.tmdb.org" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#050505] text-white`}
       >
