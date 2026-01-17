@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { MonetizationConfig } from "@/lib/monetization";
+
 interface AdUnitProps {
   slot: "footer" | "sidebar" | "feed" | "card";
   className?: string;
@@ -15,8 +17,8 @@ interface AdUnitProps {
 export function AdUnit({ 
     slot, 
     className = "", 
-    testMode = false, // Default to FALSE to enable live connection
-    adClient = process.env.NEXT_PUBLIC_ADSENSE_ID, 
+    testMode = false, 
+    adClient = MonetizationConfig.adClient, 
     adSlot,
     format = "auto"
 }: AdUnitProps) {
@@ -24,12 +26,8 @@ export function AdUnit({
   const adRef = useRef<HTMLDivElement>(null);
   const adFilled = useRef(false);
 
-  // Auto-map slots to env vars if specific ID not provided
-  const effectiveAdSlot = adSlot || (
-    slot === "footer" ? process.env.NEXT_PUBLIC_AD_SLOT_FOOTER :
-    slot === "card" ? process.env.NEXT_PUBLIC_AD_SLOT_CARD :
-    undefined
-  );
+  // Auto-map slots using centralised config
+  const effectiveAdSlot = adSlot || MonetizationConfig.slots[slot];
 
   useEffect(() => {
     const observer = new IntersectionObserver(

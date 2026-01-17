@@ -81,6 +81,26 @@ sequenceDiagram
 
 Standard recommendation algorithms create echo chambers. If you watch one sci-fi movie, you get 10 more. **Lumina** breaks this cycle by asking "How do you want to *feel*?" allowing for cross-genre discovery that respects emotional context over categorical metadata.
 
+## 💰 Monetization & Partnerships (v1.0)
+
+Lumina features a built-in, non-intrusive monetization architecture designed to support the platform without degrading UX.
+
+### Features
+- **Google AdSense Native Ads**: Blends seamlessly into the movie grid and footer.
+- **Amazon Affiliate**: Contextual "Buy Physical Media" links in movie details.
+- **Support System**: "Support the Architecture" CTA.
+
+### Setup Guide
+To activate ads, add the following to your environment variables (e.g., in Vercel):
+
+```bash
+NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXXXXXXXXXXXXXX  # Your Publisher ID
+NEXT_PUBLIC_AD_SLOT_FOOTER=XXXXXXXXXXXXXXXX     # Footer Ad Unit ID
+NEXT_PUBLIC_AD_SLOT_CARD=XXXXXXXXXXXXXXXX       # Grid/Feed Ad Unit ID
+```
+
+Configuration can also be managed in `src/lib/monetization.ts`.
+
 ---
 
 *Architected by **Architect-Zero**.*
