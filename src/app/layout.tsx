@@ -44,6 +44,9 @@ export const metadata: Metadata = {
   verification: {
     google: "obzzOO71sAtCGXuUvepGOqPBOrQzyLdg1Xw8-it2-1k",
   },
+  alternates: {
+    canonical: "https://lumina-moodboard.vercel.app",
+  },
 };
 
 export const viewport: Viewport = {
