@@ -11,103 +11,52 @@ export const size = {
 }
  
 export const contentType = 'image/png'
-
-const wrapperStyle = {
-    background: '#050505',
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'sans-serif',
-    color: 'white',
-    position: 'relative',
-} as const;
-
-const gradientStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'radial-gradient(circle at center, rgba(79, 70, 229, 0.2) 0%, #050505 70%)',
-} as const;
-
-const logoContainerStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '20px',
-    zIndex: 10
-} as const;
-
-const logoIconStyle = {
-    width: '80px', 
-    height: '80px', 
-    borderRadius: '50%', 
-    background: 'linear-gradient(135deg, #6366f1, #a855f7)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '40px'
-} as const;
-
-const titleStyle = {
-    fontSize: '80px', 
-    fontWeight: 'bold', 
-    margin: 0, 
-    letterSpacing: '-2px'
-} as const;
-
-const textStyle = {
-    fontSize: '32px', 
-    opacity: 0.8, 
-    marginTop: '20px', 
-    maxWidth: '800px', 
-    textAlign: 'center',
-    lineHeight: 1.4,
-    zIndex: 10
-} as const;
-
-const footerStyle = {
-    position: 'absolute',
-    bottom: '40px',
-    fontSize: '20px',
-    opacity: 0.5,
-    zIndex: 10
-} as const;
  
 export default async function Image() {
   return new ImageResponse(
     (
-      // eslint-disable-next-line
-      <div style={wrapperStyle}>
+      <div
+        // @ts-expect-error: Satori supports 'tw' prop
+        tw="w-full h-full flex flex-col items-center justify-center bg-[#050505] text-white font-sans relative"
+      >
         {/* Background Gradient */}
-        {/* eslint-disable-next-line */}
-        <div style={gradientStyle} />
+        <div 
+            // @ts-expect-error: Satori supports 'tw' prop
+            tw="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.2)_0%,#050505_70%)]"
+        />
 
-        {/* eslint-disable-next-line */}
-        <div style={logoContainerStyle}>
+        <div 
+            // @ts-expect-error: Satori supports 'tw' prop
+            tw="flex items-center gap-[20px] z-10"
+        >
             {/* Logo Placeholder */}
-            {/* eslint-disable-next-line */}
-            <div style={logoIconStyle}>
+            <div 
+                // @ts-expect-error: Satori supports 'tw' prop
+                tw="w-[80px] h-[80px] rounded-full bg-[linear-gradient(135deg,#6366f1,#a855f7)] flex items-center justify-center text-[40px]"
+            >
                 ✨
             </div>
-            {/* eslint-disable-next-line */}
-            <h1 style={titleStyle}>
+            <h1 
+                // @ts-expect-error: Satori supports 'tw' prop
+                tw="text-[80px] font-bold m-0 tracking-[-2px]"
+            >
                 Lumina
             </h1>
         </div>
 
-        {/* eslint-disable-next-line */}
-        <p style={textStyle}>
+        <p 
+            // @ts-expect-error: Satori supports 'tw' prop
+            tw="text-[32px] opacity-80 mt-[20px] max-w-[800px] text-center leading-[1.4] z-10"
+        >
             Stop searching. Start feeling. 
             <br />
             AI-curated movies for your mood.
         </p>
 
-        {/* eslint-disable-next-line */}
-        <div style={footerStyle}>
+        <div 
+            // @ts-expect-error: Satori supports 'tw' prop
+            tw="absolute bottom-[40px] text-[20px] opacity-50 z-10"
+        >
             lumina-moodboard.vercel.app
         </div>
       </div>
