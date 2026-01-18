@@ -79,6 +79,7 @@ export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, o
                  fill
                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                 priority={index < 4}
                />
              ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-zinc-700 bg-zinc-900 p-4 text-center">
