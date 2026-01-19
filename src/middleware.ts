@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function middleware(_request: NextRequest) {
   const response = NextResponse.next();
   
   // Security Headers
@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
     img-src 'self' blob: data: https://image.tmdb.org https://lumina-moodboard.vercel.app https://pagead2.googlesyndication.com;
     font-src 'self' https://fonts.gstatic.com;
     connect-src 'self' https://api.themoviedb.org https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://www.google.com;
-    frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com;
+    frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://www.youtube.com https://youtube.com;
   `.replace(/\s{2,}/g, ' ').trim();
 
   headers.set('Content-Security-Policy', csp);
