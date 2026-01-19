@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "Lumina",
     images: [
       {
-        url: "/og-image.jpg", // We don't have this, but standard practice to define it
+        url: "/og-image.png", // Newly generated cinematic OG image
         width: 1200,
         height: 630,
       },
@@ -93,7 +93,7 @@ export default function RootLayout({
               "name": "Lumina",
               "url": "https://lumina-moodboard.vercel.app",
               "description": "AI-Powered Cinematic Discovery based on emotional state.",
-              "image": "https://lumina-moodboard.vercel.app/og-image.jpg",
+              "image": "https://lumina-moodboard.vercel.app/og-image.png",
               "applicationCategory": "EntertainmentApplication",
               "operatingSystem": "Web",
               "author": {

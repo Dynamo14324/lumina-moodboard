@@ -8,6 +8,7 @@ import { fetchMovieDetails, fetchWatchProviders } from "@/lib/api";
 import { WatchProvider } from "@/lib/types";
 import { Share2, Globe } from "lucide-react";
 import Image from "next/image";
+import { getAmazonAffiliateUrl } from "@/lib/affiliate";
 
 interface MovieDetailsModalProps {
   movieId: number | null;
@@ -298,6 +299,19 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                                        <span className="text-[10px] uppercase font-bold text-zinc-500 max-w-[70px] truncate text-center group-hover:text-white transition-colors tracking-tighter">{p.provider_name}</span>
                                    </a>
                                ))}
+                               {/* Ethical Monetization Section */}
+                               <a 
+                                   href={getAmazonAffiliateUrl(details.title)}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   className="flex flex-col items-center gap-3 group"
+                                   aria-label={`Buy or rent ${details.title} on Amazon`}
+                               >
+                                   <div className="w-14 h-14 relative rounded-2xl shadow-xl overflow-hidden group-hover:scale-110 group-hover:ring-2 group-hover:ring-orange-500/50 transition-all duration-300 bg-zinc-800 flex items-center justify-center p-2">
+                                       <span className="text-2xl">📦</span>
+                                   </div>
+                                   <span className="text-[10px] uppercase font-bold text-zinc-500 max-w-[70px] truncate text-center group-hover:text-white transition-colors tracking-tighter underline underline-offset-2">Buy / Rent</span>
+                               </a>
                            </div>
                         ) : (
                            <a 

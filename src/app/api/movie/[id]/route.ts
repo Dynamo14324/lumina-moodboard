@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MovieDetails } from "@/lib/types";
 
-const API_KEY = process.env.TMDB_API_KEY || process.env.NEXT_PUBLIC_TMDB_API_KEY;
-const BASE_URL = 'https://api.themoviedb.org/3';
 
 // Simplified synthetic data for details (matching the discovery one + extra fields)
 const SYNTHETIC_DETAILS_MAP: Record<number, MovieDetails> = {
@@ -44,6 +42,8 @@ const SYNTHETIC_DETAILS_MAP: Record<number, MovieDetails> = {
 };
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const API_KEY = process.env.TMDB_API_KEY || process.env.NEXT_PUBLIC_TMDB_API_KEY;
+  const BASE_URL = 'https://api.themoviedb.org/3';
   const { id } = await params;
   const movieId = Number(id);
 
