@@ -103,4 +103,4 @@ Configuration can also be managed in `src/lib/monetization.ts`.
 
 ---
 
-*Architected by **Architect-Zero**.*
+*Architected by **Dynamo_14324**.*
