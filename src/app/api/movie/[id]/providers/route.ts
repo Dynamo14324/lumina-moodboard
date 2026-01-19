@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_KEY = process.env.TMDB_API_KEY || process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const API_KEY = process.env.TMDB_API_KEY || process.env.NEXT_PUBLIC_TMDB_API_KEY;
   const { id } = await params;
   
   if (!API_KEY) {
