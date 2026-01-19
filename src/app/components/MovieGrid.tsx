@@ -43,8 +43,17 @@ export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, o
                 stiffness: 200,
                 delay: index * 0.05 
                 }}
-                className="group relative aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-950 border border-white/5 hover:border-indigo-500/50 transition-all duration-500 cursor-pointer shadow-2xl"
+                className="group relative aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-950 border border-white/5 hover:border-indigo-500/50 transition-all duration-500 cursor-pointer shadow-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 onClick={() => onSelectMovie(movie.id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSelectMovie(movie.id);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`View details for ${movie.title}`}
             >
              <a 
                 href={`https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}+details+and+cast`}

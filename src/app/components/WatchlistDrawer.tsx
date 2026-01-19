@@ -33,6 +33,9 @@ export function WatchlistDrawer({ isOpen, onClose, onSelectMovie }: WatchlistDra
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-zinc-900 border-l border-white/10 shadow-2xl z-50 overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Your Watchlist"
           >
             <div className="p-6">
               <div className="flex items-center justify-between mb-8">

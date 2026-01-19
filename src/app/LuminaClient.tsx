@@ -1,105 +1,30 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
-import { MoodSelector, MOODS } from "./components/MoodSelector";
+
+import { MoodSelector } from "./components/MoodSelector";
 import { MovieGrid } from "./components/MovieGrid";
 import { AudioAmbience } from "./components/AudioAmbience";
-import { fetchMoviesByMood } from "@/lib/api";
-import { generateAIInsight } from "@/lib/ai-curator";
-import { Movie } from "@/lib/types";
 import { motion } from "framer-motion";
-import { useWatchlist } from "@/lib/useWatchlist";
 import { WatchlistDrawer } from "./components/WatchlistDrawer";
 import { Heart } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { MovieDetailsModal } from "./components/MovieDetailsModal";
 import { SupportButton } from "./components/monetization/SupportButton";
 import { AdUnit } from "./components/monetization/AdUnit";
+import { useLumina } from "@/lib/hooks/useLumina";
 
 export function LuminaClient() {
-  const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
-  
-  const { watchlist, addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Sync state from URL
-  useEffect(() => {
-    const moodParam = searchParams.get("mood");
-    const movieParam = searchParams.get("movie");
-
-    if (moodParam !== selectedMood) {
-      setSelectedMood(moodParam);
-    }
-    
-    const movieIdParam = movieParam ? Number(movieParam) : null;
-    if (movieIdParam !== selectedMovieId) {
-      setSelectedMovieId(movieIdParam);
-    }
-  }, [searchParams, selectedMood, selectedMovieId]);
-
-  const handleMoodSelect = useCallback((moodId: string) => {
-    setSelectedMood(moodId);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("mood", moodId);
-    router.push(`?${params.toString()}`);
-  }, [router, searchParams]);
-
-  const handleMovieSelect = useCallback((movieId: number) => {
-    setSelectedMovieId(movieId);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("movie", String(movieId));
-    router.push(`?${params.toString()}`);
-  }, [router, searchParams]);
-
-  const handleCloseModal = useCallback(() => {
-    setSelectedMovieId(null);
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("movie");
-    router.push(`?${params.toString()}`);
-  }, [router, searchParams]);
-
-  const toggleWatchlist = useCallback((movie: Movie) => {
-    if (isInWatchlist(movie.id)) {
-      removeFromWatchlist(movie.id);
-    } else {
-      addToWatchlist(movie);
-    }
-  }, [isInWatchlist, removeFromWatchlist, addToWatchlist]);
-
-  useEffect(() => {
-    if (!selectedMood) return;
-
-    const mood = MOODS.find(m => m.id === selectedMood);
-    if (!mood) return;
-
-    let isMounted = true;
-    
-    const loadMovies = async () => {
-        setLoading(true);
-        try {
-            const data = await fetchMoviesByMood('/discover/movie', mood.query_params);
-            if (!isMounted) return;
-            
-            const enriched = data.map(m => ({
-               ...m,
-               ai_insight: generateAIInsight(m, selectedMood)
-            }));
-            setMovies(enriched);
-        } catch (err) {
-            console.error("Error fetching movies:", err);
-        } finally {
-            if (isMounted) setLoading(false);
-        }
-    };
-
-    loadMovies();
-
-    return () => { isMounted = false; };
-  }, [selectedMood]);
+  const {
+    selectedMood,
+    movies,
+    loading,
+    selectedMovieId,
+    watchlist,
+    isDrawerOpen,
+    setIsDrawerOpen,
+    handleMoodSelect,
+    handleMovieSelect,
+    handleCloseModal,
+    toggleWatchlist
+  } = useLumina();
 
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-purple-500/30 overflow-x-hidden">

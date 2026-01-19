@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Coffee, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 
 export function SupportButton() {
   return (

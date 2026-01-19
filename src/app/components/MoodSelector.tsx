@@ -62,6 +62,7 @@ export const MoodSelector = memo(function MoodSelector({ selected, onSelect }: P
           <motion.button
             key={mood.id}
             onClick={() => onSelect(mood.id)}
+            aria-pressed={isSelected}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={cn(
