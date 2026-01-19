@@ -29,7 +29,7 @@ export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, o
 
   return (
     <>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 content-auto">
       <AnimatePresence mode="wait">
         {movies.map((movie, index) => (
           <div key={movie.id} className="contents">
@@ -43,7 +43,7 @@ export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, o
                 stiffness: 200,
                 delay: index * 0.05 
                 }}
-                className="group relative aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-950 border border-white/5 hover:border-indigo-500/50 transition-all duration-500 cursor-pointer shadow-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="group relative aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-950 border border-white/5 hover:border-indigo-500/50 transition-all duration-500 cursor-pointer shadow-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 optimize-gpu"
                 onClick={() => onSelectMovie(movie.id)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {

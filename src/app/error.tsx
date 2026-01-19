@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { logger } from "@/lib/logger";
 import { AlertCircle, RotateCcw } from "lucide-react";
 
 export default function Error({
@@ -12,8 +13,8 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an analytics service
-    console.error(error);
+    // Log the error to centralized monitoring
+    logger.error("Global Catch-All Error", error, { digest: error.digest });
   }, [error]);
 
   return (

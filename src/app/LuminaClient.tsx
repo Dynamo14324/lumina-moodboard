@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { MoodSelector } from "./components/MoodSelector";
+import { MOODS } from "@/lib/constants";
 import { MovieGrid } from "./components/MovieGrid";
 import { AudioAmbience } from "./components/AudioAmbience";
 import { motion } from "framer-motion";
@@ -10,6 +12,7 @@ import { MovieDetailsModal } from "./components/MovieDetailsModal";
 import { SupportButton } from "./components/monetization/SupportButton";
 import { AdUnit } from "./components/monetization/AdUnit";
 import { useLumina } from "@/lib/hooks/useLumina";
+import { logger } from "@/lib/logger";
 
 export function LuminaClient() {
   const {
@@ -26,8 +29,56 @@ export function LuminaClient() {
     toggleWatchlist
   } = useLumina();
 
+  // Lifecycle monitoring
+  useEffect(() => {
+    if (selectedMood) {
+      logger.event("Mood Change", { mood: selectedMood });
+    }
+  }, [selectedMood]);
+
+  // Structured Data for SEO
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Lumina Home",
+        "item": "https://lumina-moodboard.vercel.app"
+      },
+      ...MOODS.map((mood, index) => ({
+        "@type": "ListItem",
+        "position": index + 2,
+        "name": mood.label,
+        "item": `https://lumina-moodboard.vercel.app?mood=${mood.id}`
+      }))
+    ]
+  };
+
+  const discoveryJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Cinematic Moods",
+    "description": "Discover movies by emotional state",
+    "itemListElement": MOODS.map((mood, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `https://lumina-moodboard.vercel.app?mood=${mood.id}`,
+      "name": mood.label
+    }))
+  };
+
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-purple-500/30 overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(discoveryJsonLd) }}
+      />
       <AudioAmbience mood={selectedMood} shouldDuck={!!selectedMovieId} />
       <MovieDetailsModal movieId={selectedMovieId} onClose={handleCloseModal} />
       <WatchlistDrawer 

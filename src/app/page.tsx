@@ -18,7 +18,9 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
         ? `https://image.tmdb.org/t/p/w1280${details.backdrop_path}`
         : details.poster_path 
           ? `https://image.tmdb.org/t/p/w780${details.poster_path}`
-          : 'https://lumina-moodboard.vercel.app/og-image.jpg';
+          : 'https://lumina-moodboard.vercel.app/og-image.png';
+
+      const canonicalUrl = `https://lumina-moodboard.vercel.app/?movie=${movieId}`;
 
       return {
         title: `${details.title} | Lumina AI`,
@@ -53,13 +55,39 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     }
   }
 
+  // Handle Mood Metadata
+  const moodId = typeof params.mood === 'string' ? params.mood : null;
+  if (moodId) {
+    const MOOD_TITLES: Record<string, string> = {
+      adrenaline: "High-Octane Adrenaline Movies",
+      ethereal: "Dreamlike Ethereal Cinema",
+      melancholy: "Deeply Reflective Melancholy Films",
+      wholesome: "Heartwarming Wholesome Movies",
+      cerebral: "Mind-Bending Cerebral Cinema"
+    };
+
+    const title = MOOD_TITLES[moodId] || "Discover Your Cinematic Mood";
+    return {
+      title: `${title} | Lumina AI`,
+      description: `Curated ${moodId} movies selected by AI for your current emotional state. Feel the cinema with Lumina.`,
+      alternates: { canonical: `https://lumina-moodboard.vercel.app/?mood=${moodId}` },
+      openGraph: {
+        title: `${title} - Lumina Discovery`,
+        description: `Explore the best ${moodId} films, expertly curated.`,
+        images: ["https://lumina-moodboard.vercel.app/og-image.png"],
+        url: `https://lumina-moodboard.vercel.app/?mood=${moodId}`,
+      }
+    };
+  }
+
   return {
     title: "Lumina | AI-Powered Cinematic Discovery",
     description: "Stop searching. Start feeling. Discover movies based on your emotional state with Lumina's AI mood curator.",
+    alternates: { canonical: "https://lumina-moodboard.vercel.app" },
     openGraph: {
         title: "Lumina",
         description: "AI-Powered Cinematic Discovery",
-        images: ["https://lumina-moodboard.vercel.app/og-image.jpg"], // Ensure this exists or use a default
+        images: ["https://lumina-moodboard.vercel.app/og-image.png"],
     }
   };
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Movie, Mood } from "@/lib/types";
-import { MOODS } from "@/app/components/MoodSelector";
+import { MOODS } from "@/lib/constants";
 import { fetchMoviesByMood } from "@/lib/api";
 import { generateAIInsight } from "@/lib/ai-curator";
 import { useWatchlist } from "@/lib/useWatchlist";
