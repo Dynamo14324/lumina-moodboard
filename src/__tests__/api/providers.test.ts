@@ -3,8 +3,9 @@ import { GET } from '@/app/api/movie/[id]/providers/route';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Fix TS error for global fetch mock
+// Fix TS error for global fetch mock
 interface GlobalFetchMock extends jest.Mock {
-  mockResolvedValueOnce: (val: any) => this;
+  mockResolvedValueOnce: (val: unknown) => this;
 }
 
 // Mock fetch
@@ -12,13 +13,13 @@ global.fetch = jest.fn() as unknown as GlobalFetchMock;
 
 // Polyfill Response.json
 if (!Response.json) {
-  // @ts-ignore
-  Response.json = (data: any, init?: ResponseInit) => {
+  // @ts-expect-error - Polyfilling static method
+  Response.json = (data: unknown, init?: ResponseInit) => {
     return new Response(JSON.stringify(data), {
         ...init,
         headers: {
             'content-type': 'application/json',
-            ...init?.headers,
+            ...(init?.headers || {}),
         }
     });
   }
