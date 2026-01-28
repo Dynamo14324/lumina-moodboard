@@ -73,19 +73,24 @@ export function AdUnit({
   };
 
   // If no client ID provided and strict mode is off, show placeholder
-  const showPlaceholder = testMode || !adClient || !effectiveAdSlot;
+  const showPlaceholder = testMode && (!adClient || !effectiveAdSlot);
+
+  // In production, if we don't have valid IDs, render nothing to avoid layout shifts or 400 errors
+  if (!testMode && (!adClient || !effectiveAdSlot)) {
+    return null;
+  }
 
   return (
     <div 
       ref={adRef}
-      className={`relative overflow-hidden bg-white/5 border border-white/5 rounded-xl ${getSizeClass()} ${className} flex items-center justify-center`}
+      className={`relative overflow-hidden ${getSizeClass()} ${className} flex items-center justify-center ${showPlaceholder ? 'bg-white/5 border border-white/5 rounded-xl' : ''}`}
     >
         {showPlaceholder && (
             <div className="absolute top-2 right-2 text-[10px] text-white/20 uppercase font-bold tracking-widest border border-white/10 px-1 rounded z-10">Sponsored</div>
         )}
         <AnimatePresence>
             {isVisible ? (
-                (testMode || !adClient || !effectiveAdSlot) ? (
+                showPlaceholder ? (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900/50 border border-white/5 rounded-xl text-center p-4">
                         <span className="text-[10px] uppercase tracking-widest text-zinc-600 font-medium mb-2">
                             Sponsored
@@ -106,7 +111,7 @@ export function AdUnit({
                     </div>
                 )
             ) : (
-                <div className="w-full h-full animate-pulse bg-white/5" />
+                <div className="w-full h-full" /> 
             )}
         </AnimatePresence>
     </div>
