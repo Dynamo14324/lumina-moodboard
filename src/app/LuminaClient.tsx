@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { MoodSelector } from "./components/MoodSelector";
 import { MOODS } from "@/lib/constants";
 import { MovieGrid } from "./components/MovieGrid";
@@ -124,14 +126,27 @@ export function LuminaClient() {
              AI-Powered Cinematic Discovery
            </motion.div>
            
-           <motion.h1 
-             initial={{ opacity: 0, scale: 0.95 }}
-             animate={{ opacity: 1, scale: 1 }}
-             transition={{ delay: 0.3, type: "spring" }}
-             className="text-6xl md:text-8xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/40"
-           >
-             Lumina
-           </motion.h1>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="flex justify-center"
+            >
+              <Link href="/" className="inline-flex items-center gap-5 group">
+                <div className="relative w-16 h-16 md:w-24 md:h-24 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(99,102,241,0.3)] group-hover:shadow-[0_0_70px_rgba(99,102,241,0.5)] group-hover:scale-105 transition-all duration-700 ring-1 ring-white/20">
+                  <Image 
+                    src="/logo.png" 
+                    alt="Lumina Logo" 
+                    fill 
+                    className="object-cover transition-transform duration-700 group-hover:rotate-12 group-hover:scale-110"
+                    priority
+                  />
+                </div>
+                <h1 className="text-6xl md:text-9xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/20 transition-all duration-700 group-hover:tracking-normal">
+                  Lumina
+                </h1>
+              </Link>
+            </motion.div>
            
            <motion.p 
              initial={{ opacity: 0 }}

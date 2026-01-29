@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://lumina-moodboard.vercel.app"),
   title: "Lumina | AI-Powered Cinematic Discovery",
   description: "Stop searching. Start feeling. Discover movies based on your emotional state with Lumina's AI-powered mood selector.",
+  icons: {
+    icon: "/favicon.png",
+  },
   keywords: ["movies", "mood", "ai", "discovery", "cinema", "recommendation", "streaming"],
   authors: [{ name: "Yogesh Jadhav (Dynamo_14324)" }],
   openGraph: {
