@@ -18,9 +18,9 @@ export function middleware() {
     default-src 'self';
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://tpc.googlesyndication.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https://image.tmdb.org https://lumina-moodboard.vercel.app https://pagead2.googlesyndication.com;
+    img-src 'self' blob: data: https://image.tmdb.org https://lumina-moodboard.vercel.app https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net;
     font-src 'self' https://fonts.gstatic.com;
-    connect-src 'self' https://api.themoviedb.org https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://www.google.com;
+    connect-src 'self' https://api.themoviedb.org https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://www.google.com https://googleads.g.doubleclick.net;
     frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://www.youtube.com https://youtube.com;
   `.replace(/\s{2,}/g, ' ').trim();
 

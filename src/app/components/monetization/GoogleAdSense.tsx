@@ -15,7 +15,8 @@ export function GoogleAdSense({ publisherId }: GoogleAdSenseProps) {
       async
       src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${publisherId}`}
       crossOrigin="anonymous"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
+      onLoad={() => console.log(`[Lumina Ads] AdSense Script Loaded: ${publisherId}`)}
     />
   );
 }

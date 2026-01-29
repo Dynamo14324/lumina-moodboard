@@ -75,8 +75,14 @@ export function AdUnit({
   // If no client ID provided and strict mode is off, show placeholder
   const showPlaceholder = testMode && (!adClient || !effectiveAdSlot);
 
+  // Placeholder check to prevent 400 errors from Google
+  const isPlaceholder = effectiveAdSlot === "1234567890" || effectiveAdSlot === "0987654321";
+
   // In production, if we don't have valid IDs, render nothing to avoid layout shifts or 400 errors
-  if (!testMode && (!adClient || !effectiveAdSlot)) {
+  if (!testMode && (!adClient || !effectiveAdSlot || isPlaceholder)) {
+    if (isPlaceholder && process.env.NODE_ENV === 'production') {
+       console.warn(`[Lumina Ads] AdUnit skipped: Slot '${slot}' is using a placeholder ID. Update environment variables.`);
+    }
     return null;
   }
 
