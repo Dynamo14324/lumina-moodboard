@@ -299,18 +299,21 @@ export function MovieDetailsModal({ movieId, onClose }: MovieDetailsModalProps) 
                                        <span className="text-[10px] uppercase font-bold text-zinc-500 max-w-[70px] truncate text-center group-hover:text-white transition-colors tracking-tighter">{p.provider_name}</span>
                                    </a>
                                ))}
-                               {/* Ethical Monetization Section */}
+                           {/* Ethical Monetization Section - Prime Video Upsell */}
                                <a 
                                    href={getAmazonAffiliateUrl(details.title)}
                                    target="_blank"
                                    rel="noopener noreferrer"
-                                   className="flex flex-col items-center gap-3 group"
-                                   aria-label={`Buy or rent ${details.title} on Amazon`}
+                                   className="flex flex-col items-center gap-3 group relative overflow-hidden rounded-2xl p-1"
+                                   aria-label={`Watch ${details.title} on Prime Video`}
                                >
-                                   <div className="w-14 h-14 relative rounded-2xl shadow-xl overflow-hidden group-hover:scale-110 group-hover:ring-2 group-hover:ring-orange-500/50 transition-all duration-300 bg-zinc-800 flex items-center justify-center p-2">
-                                       <span className="text-2xl">📦</span>
+                                   <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                   
+                                   <div className="w-14 h-14 relative rounded-xl shadow-xl overflow-hidden group-hover:scale-105 group-hover:ring-2 group-hover:ring-yellow-400 transition-all duration-300 bg-[#00A8E1] flex items-center justify-center">
+                                       {/* Prime Video Icon / Play Arrow */}
+                                       <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[14px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
                                    </div>
-                                   <span className="text-[10px] uppercase font-bold text-zinc-500 max-w-[70px] truncate text-center group-hover:text-white transition-colors tracking-tighter underline underline-offset-2">Buy / Rent</span>
+                                   <span className="text-[10px] uppercase font-bold text-yellow-500 max-w-[70px] truncate text-center group-hover:text-yellow-400 transition-colors tracking-tighter">Prime Video</span>
                                </a>
                            </div>
                         ) : (
