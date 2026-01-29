@@ -13,6 +13,12 @@ interface ShopUnitProps {
 export function ShopUnit({ query, moodLabel, className = "" }: ShopUnitProps) {
   const url = getAmazonSearchUrl(query);
 
+  const handleClick = () => {
+    // Lazy import or global reference would be better, but for now we rely on the browser console/Vercel
+    // We can interact with window.va (Vercel Analytics) if available, or just console log
+    console.log(`[Lumina Analytics] Shop Click: ${moodLabel} - ${query}`);
+  };
+
   return (
     <motion.a
       href={url}
@@ -21,6 +27,7 @@ export function ShopUnit({ query, moodLabel, className = "" }: ShopUnitProps) {
       className={`relative block w-full h-full overflow-hidden rounded-2xl bg-zinc-900 border border-white/10 group ${className}`}
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 400, damping: 10 }}
+      onClick={handleClick}
     >
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
