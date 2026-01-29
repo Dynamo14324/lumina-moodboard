@@ -63,7 +63,10 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       ethereal: "Dreamlike Ethereal Cinema",
       melancholy: "Deeply Reflective Melancholy Films",
       wholesome: "Heartwarming Wholesome Movies",
-      cerebral: "Mind-Bending Cerebral Cinema"
+      cerebral: "Mind-Bending Cerebral Cinema",
+      hustle: "Movies about Money, Power & Ambition",
+      dark: "Dark & Terrifying Horror Movies",
+      romance: "Best Romantic Movies & Love Stories"
     };
 
     const title = MOOD_TITLES[moodId] || "Discover Your Cinematic Mood";

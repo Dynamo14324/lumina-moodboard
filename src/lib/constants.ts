@@ -40,5 +40,29 @@ export const MOODS: Mood[] = [
     description: "Complex. Mind-bending.",
     gradient: "from-emerald-500 to-teal-700",
     query_params: { with_genres: "9648,878", sort_by: "vote_average.desc" }
+  },
+  {
+    id: "hustle",
+    emoji: "💰",
+    label: "Hustle",
+    description: "Ambition. Power. Success.",
+    gradient: "from-green-600 to-emerald-900",
+    query_params: { with_keywords: "10714,12985", sort_by: "revenue.desc" } // Keywords for finance, business
+  },
+  {
+    id: "dark",
+    emoji: "🌑",
+    label: "Dark",
+    description: "Tense. Terrifying.",
+    gradient: "from-zinc-900 to-black",
+    query_params: { with_genres: "27,53", sort_by: "popularity.desc" }
+  },
+  {
+    id: "romance",
+    emoji: "🌹",
+    label: "Romance",
+    description: "Passion. Connection.",
+    gradient: "from-red-500 to-pink-600",
+    query_params: { with_genres: "10749", sort_by: "popularity.desc" }
   }
 ];
