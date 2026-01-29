@@ -61,6 +61,7 @@ export interface Mood {
   gradient: string;
   query_params: Record<string, string | number>;
   shop_query?: string; // e.g., "business books", "horror collectibles"
+  affiliate_link?: string; // Direct override URL for affiliate shop
 }
 
 export interface TMDBResponse<T> {

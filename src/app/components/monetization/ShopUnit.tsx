@@ -5,13 +5,16 @@ import { ShoppingBag, ArrowUpRight } from "lucide-react";
 import { getAmazonSearchUrl } from "@/lib/affiliate";
 
 interface ShopUnitProps {
-  query: string;
+  query?: string;
+  affiliateLink?: string;
   moodLabel: string;
   className?: string;
 }
 
-export function ShopUnit({ query, moodLabel, className = "" }: ShopUnitProps) {
-  const url = getAmazonSearchUrl(query);
+export function ShopUnit({ query, affiliateLink, moodLabel, className = "" }: ShopUnitProps) {
+  const url = affiliateLink || (query ? getAmazonSearchUrl(query) : "#");
+  
+  if (!url || url === "#") return null;
 
   const handleClick = () => {
     // Lazy import or global reference would be better, but for now we rely on the browser console/Vercel

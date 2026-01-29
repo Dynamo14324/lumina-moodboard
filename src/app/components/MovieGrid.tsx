@@ -15,10 +15,11 @@ interface MovieGridProps {
   onToggleWatchlist: (movie: Movie) => void;
   onSelectMovie: (id: number) => void;
   shopQuery?: string;
+  affiliateLink?: string;
   moodLabel?: string;
 }
 
-export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSelectMovie, shopQuery, moodLabel }: MovieGridProps) {
+export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSelectMovie, shopQuery, affiliateLink, moodLabel }: MovieGridProps) {
 
   if (loading) {
     return (
@@ -142,14 +143,14 @@ export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, o
           )}
 
           {/* Shop Unit Injection (Index 7, 19, 31...) - Contextual Commerce */}
-          {shopQuery && (index === 7 || (index > 7 && (index - 7) % 12 === 0)) && (
+          {(shopQuery || affiliateLink) && (index === 7 || (index > 7 && (index - 7) % 12 === 0)) && (
             <motion.div
                initial={{ opacity: 0, scale: 0.9 }}
                animate={{ opacity: 1, scale: 1 }}
                transition={{ delay: 0.2 }}
                className="aspect-[2/3] w-full"
             >
-                <ShopUnit query={shopQuery} moodLabel={moodLabel || "Collection"} className="w-full h-full" />
+                <ShopUnit query={shopQuery} affiliateLink={affiliateLink} moodLabel={moodLabel || "Collection"} className="w-full h-full" />
             </motion.div>
           )}
           </div>

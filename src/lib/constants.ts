@@ -35,7 +35,8 @@ export const MOODS: Mood[] = [
     description: "Feel good. Uplifting.", 
     gradient: "from-pink-400 to-rose-400",
     query_params: { with_genres: "10751,35", sort_by: "popularity.desc" },
-    shop_query: "family board games"
+    shop_query: "Movie Night Snacks",
+    affiliate_link: "https://www.amazon.in/alm/storefront?almBrandId=ctnow&linkCode=ll2&tag=yogeshjadha09-21&linkId=221ca9222f6e3d2ff54926d86d94de94&language=en_IN&ref_=as_li_ss_tl"
   },
   {
     id: "cerebral",
