@@ -7,7 +7,8 @@ export const MOODS: Mood[] = [
     label: "Adrenaline", 
     description: "High stakes. Fast pace.", 
     gradient: "from-orange-500 to-red-600",
-    query_params: { with_genres: "28,53", sort_by: "popularity.desc" }
+    query_params: { with_genres: "28,53", sort_by: "popularity.desc" },
+    shop_query: "action movie collectibles"
   },
   { 
     id: "ethereal", 
@@ -15,7 +16,8 @@ export const MOODS: Mood[] = [
     label: "Ethereal", 
     description: "Dreamlike. Otherworldly.", 
     gradient: "from-purple-500 to-indigo-600",
-    query_params: { with_genres: "878,14", sort_by: "vote_average.desc" }
+    query_params: { with_genres: "878,14", sort_by: "vote_average.desc" },
+    shop_query: "ambient lighting projector"
   },
   { 
     id: "melancholy", 
@@ -23,7 +25,8 @@ export const MOODS: Mood[] = [
     label: "Melancholy", 
     description: "Reflective. Deep.", 
     gradient: "from-blue-700 to-slate-800",
-    query_params: { with_genres: "18", "vote_average.gte": 8 }
+    query_params: { with_genres: "18", "vote_average.gte": 8 },
+    shop_query: "comfort blanket tea set"
   },
   { 
     id: "wholesome", 
@@ -31,7 +34,8 @@ export const MOODS: Mood[] = [
     label: "Wholesome", 
     description: "Feel good. Uplifting.", 
     gradient: "from-pink-400 to-rose-400",
-    query_params: { with_genres: "10751,35", sort_by: "popularity.desc" }
+    query_params: { with_genres: "10751,35", sort_by: "popularity.desc" },
+    shop_query: "family board games"
   },
   {
     id: "cerebral",
@@ -39,7 +43,8 @@ export const MOODS: Mood[] = [
     label: "Cerebral",
     description: "Complex. Mind-bending.",
     gradient: "from-emerald-500 to-teal-700",
-    query_params: { with_genres: "9648,878", sort_by: "vote_average.desc" }
+    query_params: { with_genres: "9648,878", sort_by: "vote_average.desc" },
+    shop_query: "puzzle box strategy games"
   },
   {
     id: "hustle",
@@ -47,7 +52,8 @@ export const MOODS: Mood[] = [
     label: "Hustle",
     description: "Ambition. Power. Success.",
     gradient: "from-green-600 to-emerald-900",
-    query_params: { with_keywords: "10714,12985", sort_by: "revenue.desc" } // Keywords for finance, business
+    query_params: { with_keywords: "10714,12985", sort_by: "revenue.desc" },
+    shop_query: "business strategy books biography" 
   },
   {
     id: "dark",
@@ -55,7 +61,8 @@ export const MOODS: Mood[] = [
     label: "Dark",
     description: "Tense. Terrifying.",
     gradient: "from-zinc-900 to-black",
-    query_params: { with_genres: "27,53", sort_by: "popularity.desc" }
+    query_params: { with_genres: "27,53", sort_by: "popularity.desc" },
+    shop_query: "horror movie posters led lights"
   },
   {
     id: "romance",
@@ -63,6 +70,7 @@ export const MOODS: Mood[] = [
     label: "Romance",
     description: "Passion. Connection.",
     gradient: "from-red-500 to-pink-600",
-    query_params: { with_genres: "10749", sort_by: "popularity.desc" }
+    query_params: { with_genres: "10749", sort_by: "popularity.desc" },
+    shop_query: "date night games candles"
   }
 ];

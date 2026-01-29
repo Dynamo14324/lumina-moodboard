@@ -5,6 +5,7 @@ import { memo } from "react";
 import { Movie } from "@/lib/types";
 import { Heart, Play } from "lucide-react";
 import Image from "next/image";
+import { ShopUnit } from "./monetization/ShopUnit";
 import { AdUnit } from "./monetization/AdUnit";
 
 interface MovieGridProps {
@@ -13,9 +14,11 @@ interface MovieGridProps {
   watchlist: Movie[];
   onToggleWatchlist: (movie: Movie) => void;
   onSelectMovie: (id: number) => void;
+  shopQuery?: string;
+  moodLabel?: string;
 }
 
-export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSelectMovie }: MovieGridProps) {
+export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, onToggleWatchlist, onSelectMovie, shopQuery, moodLabel }: MovieGridProps) {
 
   if (loading) {
     return (
@@ -125,6 +128,8 @@ export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, o
                 </div>
              </div>
           </motion.div>
+          
+          {/* Ad Unit Injection (Index 3, 15, 27...) */}
           {(index === 3 || (index > 3 && (index - 3) % 12 === 0)) && (
             <motion.div
                initial={{ opacity: 0, scale: 0.9 }}
@@ -133,6 +138,18 @@ export const MovieGrid = memo(function MovieGrid({ movies, loading, watchlist, o
                className="aspect-[2/3] w-full"
             >
                 <AdUnit slot="card" className="w-full h-full" />
+            </motion.div>
+          )}
+
+          {/* Shop Unit Injection (Index 7, 19, 31...) - Contextual Commerce */}
+          {shopQuery && (index === 7 || (index > 7 && (index - 7) % 12 === 0)) && (
+            <motion.div
+               initial={{ opacity: 0, scale: 0.9 }}
+               animate={{ opacity: 1, scale: 1 }}
+               transition={{ delay: 0.2 }}
+               className="aspect-[2/3] w-full"
+            >
+                <ShopUnit query={shopQuery} moodLabel={moodLabel || "Collection"} className="w-full h-full" />
             </motion.div>
           )}
           </div>

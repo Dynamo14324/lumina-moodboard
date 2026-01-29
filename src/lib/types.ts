@@ -60,6 +60,7 @@ export interface Mood {
   description: string;
   gradient: string;
   query_params: Record<string, string | number>;
+  shop_query?: string; // e.g., "business books", "horror collectibles"
 }
 
 export interface TMDBResponse<T> {

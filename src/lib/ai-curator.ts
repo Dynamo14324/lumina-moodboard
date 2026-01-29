@@ -36,6 +36,27 @@ const INSIGHT_TEMPLATES = {
     "A brilliant deconstruction of genre tropes.",
     "Intellectually stimulating narrative layers."
   ],
+  hustle: [
+    "A manual for those who crave power and success.",
+    "Showcases the relentless drive for the top.",
+    "A brutal look at the cost of ambition.",
+    "High-stakes negotiation and corporate warfare.",
+    "Inspiring for anyone building an empire."
+  ],
+  dark: [
+    "Unrelenting psychological terror.",
+    "A descent into madness and fear.",
+    "Atmospheric horror that gets under your skin.",
+    "Masterful use of shadow and suspense.",
+    "Not for the faint of heart."
+  ],
+  romance: [
+    "A chemistry that lights up the screen.",
+    "Heart-wrenching and beautifully told.",
+    "Captures the euphoria of falling in love.",
+    "A timeless story of connection.",
+    "Passion that transcends the screen."
+  ],
   default: [
     "Critics praised the bold directorial choices.",
     "A standout entry in modern cinema.",

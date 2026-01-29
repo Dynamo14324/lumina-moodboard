@@ -25,3 +25,17 @@ export function getAmazonAffiliateUrl(movieTitle: string): string {
 export function getWatchNowUrl(movieTitle: string): string {
     return `https://www.google.com/search?q=watch+${encodeURIComponent(movieTitle)}`;
 }
+
+/**
+ * Generates an Amazon search link for a general query (e.g., "business books")
+ */
+export function getAmazonSearchUrl(query: string): string {
+    const baseUrl = "https://www.amazon.com/s";
+    const tag = MonetizationConfig.affiliate.amazonTag;
+    const params = new URLSearchParams({
+        k: query,
+        tag: tag,
+        ref: "lumina_mood_shop"
+    });
+    return `${baseUrl}?${params.toString()}`;
+}

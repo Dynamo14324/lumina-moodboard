@@ -163,6 +163,8 @@ export function LuminaClient() {
              watchlist={watchlist}
              onToggleWatchlist={toggleWatchlist}
              onSelectMovie={handleMovieSelect}
+             shopQuery={MOODS.find(m => m.id === selectedMood)?.shop_query}
+             moodLabel={MOODS.find(m => m.id === selectedMood)?.label}
            />
         </div>
       </div>
