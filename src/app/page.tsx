@@ -77,7 +77,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       openGraph: {
         title: `${title} - Lumina Discovery`,
         description: `Explore the best ${moodId} films, expertly curated.`,
-        images: ["https://lumina-moodboard.vercel.app/og-image.png"],
+        images: [`https://lumina-moodboard.vercel.app/api/og?mood=${moodId}`],
         url: `https://lumina-moodboard.vercel.app/?mood=${moodId}`,
       }
     };
@@ -90,7 +90,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     openGraph: {
         title: "Lumina",
         description: "AI-Powered Cinematic Discovery",
-        images: ["https://lumina-moodboard.vercel.app/og-image.png"],
+        images: ["https://lumina-moodboard.vercel.app/api/og"],
     }
   };
 }
