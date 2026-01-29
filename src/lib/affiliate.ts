@@ -5,7 +5,7 @@ import { MonetizationConfig } from "./monetization";
  * This provides users with a direct path to purchase or rent the film.
  */
 export function getAmazonAffiliateUrl(movieTitle: string): string {
-    const baseUrl = "https://www.amazon.com/s";
+    const baseUrl = "https://www.amazon.in/s";
     const tag = MonetizationConfig.affiliate.amazonTag;
     
     // Search query specifically for the movie on Prime Video / DVD
@@ -13,7 +13,8 @@ export function getAmazonAffiliateUrl(movieTitle: string): string {
     const params = new URLSearchParams({
         k: query,
         tag: tag,
-        ref: "lumina_discovery"
+        ref: "lumina_discovery",
+        language: "en_IN"
     });
 
     return `${baseUrl}?${params.toString()}`;
@@ -30,12 +31,13 @@ export function getWatchNowUrl(movieTitle: string): string {
  * Generates an Amazon search link for a general query (e.g., "business books")
  */
 export function getAmazonSearchUrl(query: string): string {
-    const baseUrl = "https://www.amazon.com/s";
+    const baseUrl = "https://www.amazon.in/s";
     const tag = MonetizationConfig.affiliate.amazonTag;
     const params = new URLSearchParams({
         k: query,
         tag: tag,
-        ref: "lumina_mood_shop"
+        ref: "lumina_mood_shop",
+        language: "en_IN"
     });
     return `${baseUrl}?${params.toString()}`;
 }

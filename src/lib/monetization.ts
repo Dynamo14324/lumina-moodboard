@@ -19,7 +19,7 @@ export const MonetizationConfig = {
 
   // Affiliate / Partnership Settings
   affiliate: {
-    amazonTag: "lumina-20", // Update with your Amazon Associate Tag
+    amazonTag: "yogeshjadha09-21", // Update with your Amazon Associate Tag
     merchEnabled: true,
   },
 

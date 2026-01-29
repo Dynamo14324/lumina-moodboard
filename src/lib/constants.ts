@@ -71,6 +71,6 @@ export const MOODS: Mood[] = [
     description: "Passion. Connection.",
     gradient: "from-red-500 to-pink-600",
     query_params: { with_genres: "10749", sort_by: "popularity.desc" },
-    shop_query: "date night games candles"
+    shop_query: "date nights games and candles"
   }
 ];
