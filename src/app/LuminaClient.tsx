@@ -13,6 +13,7 @@ import { SupportButton } from "./components/monetization/SupportButton";
 import { AdUnit } from "./components/monetization/AdUnit";
 import { useLumina } from "@/lib/hooks/useLumina";
 import { logger } from "@/lib/logger";
+import { ShareButton } from "./components/ShareButton";
 
 export function LuminaClient() {
   const {
@@ -87,20 +88,24 @@ export function LuminaClient() {
         onSelectMovie={handleMovieSelect}
       />
       
-      <button 
-        onClick={() => setIsDrawerOpen(true)}
-        className="fixed top-6 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 rounded-full transition-all group"
-        aria-label="View My Stash"
-        title="View My Stash"
-      >
-        <Heart size={18} className={watchlist.length > 0 ? "fill-red-500 text-red-500" : "text-white group-hover:text-red-400"} />
-        <span className="text-sm font-medium hidden sm:inline">My Stash</span>
-        {watchlist.length > 0 && (
-            <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
-                {watchlist.length}
-            </span>
-        )}
-      </button>
+      <div className="fixed top-6 right-6 z-40 flex items-center gap-3">
+        <ShareButton moodId={selectedMood} />
+        
+        <button 
+            onClick={() => setIsDrawerOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 rounded-full transition-all group"
+            aria-label="View My Stash"
+            title="View My Stash"
+        >
+            <Heart size={18} className={watchlist.length > 0 ? "fill-red-500 text-red-500" : "text-white group-hover:text-red-400"} />
+            <span className="text-sm font-medium hidden sm:inline">My Stash</span>
+            {watchlist.length > 0 && (
+                <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                    {watchlist.length}
+                </span>
+            )}
+        </button>
+      </div>
 
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-[#050505] to-[#050505] -z-10" />
       
