@@ -7,10 +7,10 @@ export const MonetizationConfig = {
   // Ad Slot IDs (from your AdSense Dashboard)
   slots: {
     // Footer Banner (Responsive)
-    footer: process.env.NEXT_PUBLIC_AD_SLOT_FOOTER || "", 
+    footer: process.env.NEXT_PUBLIC_AD_SLOT_FOOTER || "2976334192", 
     
     // Native Grid Card (Responsive/Fluid)
-    card: process.env.NEXT_PUBLIC_AD_SLOT_CARD || "",
+    card: process.env.NEXT_PUBLIC_AD_SLOT_CARD || "9553350837",
     
     // Sidebar/Feed (Optional)
     sidebar: process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR || "",
