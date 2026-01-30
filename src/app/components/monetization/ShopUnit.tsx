@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { ShoppingBag, ArrowUpRight } from "lucide-react";
+import { track } from "@vercel/analytics/react";
+
 import { getAmazonSearchUrl } from "@/lib/affiliate";
 
 interface ShopUnitProps {
@@ -17,9 +19,12 @@ export function ShopUnit({ query, affiliateLink, moodLabel, className = "" }: Sh
   if (!url || url === "#") return null;
 
   const handleClick = () => {
-    // Lazy import or global reference would be better, but for now we rely on the browser console/Vercel
-    // We can interact with window.va (Vercel Analytics) if available, or just console log
-    console.log(`[Lumina Analytics] Shop Click: ${moodLabel} - ${query}`);
+    track('Affiliate Click', {
+      type: 'Shop Unit',
+      mood: moodLabel,
+      query: query || 'direct_link',
+      destination: url
+    });
   };
 
   return (
