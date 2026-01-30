@@ -23,7 +23,7 @@ export function ShareButton({ moodId }: ShareButtonProps) {
           url: url
         });
         return;
-      } catch (err) {
+      } catch {
         // Fallback to clipboard if user cancelled or error
       }
     }

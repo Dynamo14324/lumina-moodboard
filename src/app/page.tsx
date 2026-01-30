@@ -48,6 +48,9 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
           images: [imageUrl],
           creator: '@ArchitectZero',
         },
+        alternates: {
+          canonical: canonicalUrl,
+        },
         other: {
           'apple-mobile-web-app-title': 'Lumina',
         }

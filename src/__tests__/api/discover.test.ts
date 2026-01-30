@@ -1,11 +1,11 @@
 import 'isomorphic-fetch';
-import { createMocks } from 'node-mocks-http';
+
 import { GET } from '@/app/api/discover/route';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Fix TS error for global fetch mock
 interface GlobalFetchMock extends jest.Mock {
-  mockResolvedValueOnce: (val: any) => this;
+  mockResolvedValueOnce: (val: unknown) => this;
 }
 
 // Mock fetch
@@ -13,8 +13,8 @@ global.fetch = jest.fn() as unknown as GlobalFetchMock;
 
 // Polyfill Response.json for Next.js 13+ environment in Jest
 if (!Response.json) {
-  // @ts-ignore
-  Response.json = (data: any, init?: ResponseInit) => {
+  // @ts-expect-error - Response.json is not standard yet in Jest environment
+  Response.json = (data: unknown, init?: ResponseInit) => {
     return new Response(JSON.stringify(data), {
         ...init,
         headers: {

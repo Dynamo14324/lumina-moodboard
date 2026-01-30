@@ -8,7 +8,7 @@ type LogLevel = 'info' | 'warn' | 'error' | 'fatal';
 interface LogPayload {
   message: string;
   level: LogLevel;
-  context?: Record<string, any>;
+  context?: Record<string, unknown>;
   error?: Error;
   timestamp: string;
 }
@@ -43,12 +43,12 @@ class LuminaLogger {
       // Placeholder for production logging integration
       // fetch('/api/log', { method: 'POST', body: JSON.stringify(payload) });
       console.log(this.formatLog(payload));
-    } catch (e) {
+    } catch {
       // Fail silently to not crash the app
     }
   }
 
-  public info(message: string, context?: Record<string, any>) {
+  public info(message: string, context?: Record<string, unknown>) {
     this.persistLog({
       message,
       level: 'info',
@@ -57,7 +57,7 @@ class LuminaLogger {
     });
   }
 
-  public warn(message: string, context?: Record<string, any>) {
+  public warn(message: string, context?: Record<string, unknown>) {
     this.persistLog({
       message,
       level: 'warn',
@@ -66,7 +66,7 @@ class LuminaLogger {
     });
   }
 
-  public error(message: string, error?: Error, context?: Record<string, any>) {
+  public error(message: string, error?: Error, context?: Record<string, unknown>) {
     this.persistLog({
       message,
       level: 'error',
@@ -76,7 +76,7 @@ class LuminaLogger {
     });
   }
 
-  public event(name: string, properties?: Record<string, any>) {
+  public event(name: string, properties?: Record<string, unknown>) {
     // Analytics tracking (Vercel Analytics already integrated, but this adds a custom layer)
     this.info(`Event: ${name}`, properties);
   }

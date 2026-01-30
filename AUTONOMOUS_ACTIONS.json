@@ -1,0 +1,22 @@
+[
+  {
+    "task": "Contextual Commerce Implementation",
+    "status": "COMPLETED",
+    "details": "Deployed 'ShopUnit.tsx' component that injects Amazon affiliate cards into the movie grid based on the selected mood."
+  },
+  {
+    "task": "Affiliate Deep Linking",
+    "status": "COMPLETED",
+    "details": "Added `shop_query` to all moods (e.g., 'Hustle' -> 'business books') and implemented deep linking to Amazon Search."
+  },
+  {
+    "task": "AI Insight Upgrade",
+    "status": "COMPLETED",
+    "details": "Added specific AI insight templates for new moods (Hustle, Dark, Romance)."
+  },
+  {
+    "task": "Revenue Strategy",
+    "status": "ACTIVE",
+    "details": "System now attempts to monetize user intent beyond just movies (books, gear, collectibles) at index 7 of every grid."
+  }
+]

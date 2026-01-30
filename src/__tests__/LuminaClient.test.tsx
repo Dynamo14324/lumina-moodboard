@@ -34,9 +34,9 @@ jest.mock('@/lib/hooks/useLumina', () => ({
 
 // Mock IntersectionObserver for the AdUnit and other components
 beforeAll(() => {
-  // @ts-ignore
+  // @ts-expect-error - Mocking IntersectionObserver
   global.IntersectionObserver = class IntersectionObserver {
-    constructor(_callback: any) {}
+    constructor() {}
     observe() { return null; }
     disconnect() { return null; }
     unobserve() { return null; }
